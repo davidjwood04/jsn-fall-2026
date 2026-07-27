@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Join Scouting Night — Fall 2026 Flyers</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0f2417;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #fff;
+    min-height: 100vh;
+  }
+  .page {
+    max-width: 1920px;
+    margin: 0 auto;
+  }
+  .intro {
+    text-align: center;
+    padding: 14px 16px 4px;
+  }
+  .intro p {
+    font-size: clamp(12px, 1.6vw, 17px);
+    opacity: 0.9;
+    line-height: 1.4;
+  }
+  /* Image + overlay stage */
+  .stage {
+    position: relative;
+    width: 100%;
+    line-height: 0;
+  }
+  .stage img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .hotspot {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    border-radius: 14px;
+    background: transparent;
+    transition: background 0.15s ease;
+    cursor: pointer;
+  }
+  .hotspot span {
+    opacity: 0;
+    color: #ffffff;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    font-size: clamp(8px, 1.15vw, 17px);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.7);
+    transition: opacity 0.15s ease;
+    pointer-events: none;
+  }
+  .hotspot:hover,
+  .hotspot:focus-visible {
+    background: rgba(90, 90, 90, 0.30);
+    outline: none;
+  }
+  .hotspot:hover span,
+  .hotspot:focus-visible span {
+    opacity: 1;
+  }
+  .hotspot.pending { cursor: default; }
+  .hotspot.pending:hover { background: rgba(90, 90, 90, 0.30); }
+  .foot {
+    text-align: center;
+    padding: 16px;
+    font-size: clamp(11px, 1.3vw, 14px);
+    opacity: 0.75;
+  }
+  .foot a { color: #ffd54a; }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="intro">
+      <p>Tap or click your child&rsquo;s elementary school to open its Join Scouting Night flyer.</p>
+    </div>
+    <div class="stage">
+      <img src="jsn_flyer.png" alt="We Spy Adventure In Your Future! Attend a Join Scouting Night from 6-8pm. School lists by night.">
+      <div id="hotspots"></div>
+    </div>
+    <div class="foot">
+      Cub Scouts is open to boys and girls in Kindergarten through 5th grade.
+    </div>
+  </div>
+
+<script>
+// ── Layout constants (percent of the 1920x1080 flyer) ──────────────
+// Each column has a horizontal center (cx) and clickable width (w).
+// Rows share a common set of vertical centers (cy) top-to-bottom.
+const COL = {
+  tue: { cx: 18.0, w: 23.0 },
+  wed: { cx: 44.6, w: 22.5 },
+  thu: { cx: 70.9, w: 24.0 },
+};
+const ROW_CY = [38.0, 43.4, 48.9, 54.4, 59.8, 65.3, 70.7, 76.2, 81.7, 87.1];
+const HOT_H = 5.0; // clickable height in % of image height
+
+// ── School → 2026 Google Slides flyer (file id) ────────────────────
+// Ordered top-to-bottom within each column, matching the flyer.
+const SCHOOLS = [
+  // TUESDAY  (Sept 15)
+  ["tue", "BAGDAD",            "1-qUPKYEFNG8Gw0-aehbQadiVrwlqEDJJ3g4e3vzzAkk"],
+  ["tue", "BLOCK HOUSE CREEK", "1y8eanfyp0DBnmKKEP4h5UJiMPDaXn91RU4Efg9sgPs4"],
+  ["tue", "COX",               "1YnArSi1qkzprgzCQu2w4fYlY7GcTnnJdqJeCPNO7Li0"],
+  ["tue", "CYPRESS",           "1HTWdiLIPCqlsG7oQE11Jup6S1SCSl2WdkHF88OzH71Y"],
+  ["tue", "DEER CREEK",        "1aoqavHMuubCZmc_x3wVlTIv2yn5xJB6yqaglzvZ9XXc"],
+  ["tue", "NORTH",             "16s3xUt1JhtUz7B7BZMmohgdG-r4iAQXFNjZa64hU8Yc"],
+  ["tue", "RIVER RIDGE",       "1GMEeeoOZuarCHu5FsgT2QfFlzXcmRTYp0X0PrLhck5w"],
+  ["tue", "RUTLEDGE",          "1nVKuTa2XBP6af5w_HaE64QUwEyFDC187K5-Y8empoQA"],
+  ["tue", "TARVIN",            "1aQ2dElCIS5lrYcOHEXbL-ICItf3Tzi-rrPIGRQvHodY"],
+  ["tue", "WHITESTONE",        "1Cd0jwitCzJOdf_XBjk8vSXa_Y3yAi81InuZNwuogty0"],
+  // WEDNESDAY  (Sept 16)
+  ["wed", "AKIN",              "12WStqiNE2ktofnyjDfFmsccuMdMmMjI4hb8j9rCeCKc"],
+  ["wed", "CAMACHO",           "1AzLmJtCpk7aC884IslMg7uMFHZj7kBR0uJktSkgdCFg"],
+  ["wed", "GIDDENS",           "1bVLftJsQZEwEB2iusBTpIjuQorlyEMAtgMqZY_tX6as"],
+  ["wed", "KNOWLES",           "1GV2wIDh4QfT-UhuYuiCoOM93zIBS52EaSup807eKPac"],
+  ["wed", "LARKSPUR",          "19itmxmLH73rYM6iuMik5rKFlLW2k4pPzSGqEftuyH1Q"],
+  ["wed", "LAURA WELCH BUSH",  "1BxOqvkiDRh3V3b87cVm-yVqfFCb0MgEcEvWNJ8M5cqQ"],
+  ["wed", "MASON",             "1-Nj4JUkDMRJ0naU--aOlorJo4xJBnNGQo2UY_BkvS4o"],
+  ["wed", "REAGAN",            "1QKs3UohSaPQLTKIyCjbdFQp9MQry1o3dLhjWvHBmSFo"],
+  ["wed", "RIVER PLACE",       "1OEPQzCoIFu7Ne2WWSe5fhNQncS82PE4Dx18y4OSEtAw"],
+  // THURSDAY  (Sept 17)
+  ["thu", "NAUMANN",           "1DfVAN3O_H5bBWMLj-2ErCFyCyh7GMhySssWtVbdMyuI"],
+  ["thu", "GRANDVIEW HILLS",   "1_o1eQMANP1skbLQzJiANKQkH727wVlo8IV4ckRUT89o"],
+  ["thu", "HISLE",             null],  // no 2026 flyer yet — inert "Coming soon" box
+  ["thu", "PARKSIDE",          "1l0aTOprQaHosnJFUueNAPaBOtnclotAPowwB7sD809Y"],
+  ["thu", "PLAIN",             "198Cvn776ZaOZys3VDgjzV6jrgYfJg6ssvHnlpBjxgOY"],
+  ["thu", "PLEASANT HILL",     "1PUkjbViJYUloyBPnVYH91IiSxlhlMen046ehByCRURk"],
+  ["thu", "REED",              "19pgqNxU2KThwM5mf_eNT2CdBXUkUy2jF-kn3KO8Jjmo"],
+  ["thu", "STEINER RANCH",     "1FMQzfWeShI8bTgRkGxRNi4WfsN7-u9hnWbALPEwuWZ4"],
+  ["thu", "WESTSIDE",          "145xHQDsFPqGYlrmT1wsaiXcJnx_NCaC5e6NGae_zSrA"],
+  ["thu", "WINKLEY",           "17Cq9CXcsI466wxeUYGm5fjz2zKvI3U6TMU1iGD8cFZ0"],
+];
+
+const container = document.getElementById("hotspots");
+const rowIndex = { tue: 0, wed: 0, thu: 0 };
+
+for (const [col, name, id] of SCHOOLS) {
+  const c = COL[col];
+  const r = rowIndex[col]++;
+  const cy = ROW_CY[r];
+
+  const a = document.createElement("a");
+  a.className = "hotspot";
+  if (id) {
+    a.href = "https://docs.google.com/presentation/d/" + id + "/preview";
+    a.target = "_blank";
+    a.rel = "noopener";
+    a.setAttribute("aria-label", name + " flyer");
+  } else {
+    a.classList.add("pending");           // no flyer yet
+    a.setAttribute("aria-label", name + " — flyer coming soon");
+  }
+  a.style.left = c.cx + "%";
+  a.style.top = cy + "%";
+  a.style.width = c.w + "%";
+  a.style.height = HOT_H + "%";
+
+  const s = document.createElement("span");
+  s.textContent = id ? "Click Here" : "Coming Soon";
+  a.appendChild(s);
+  container.appendChild(a);
+}
+</script>
+</body>
+</html>
