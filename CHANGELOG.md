@@ -12,3 +12,7 @@
 
 ## 2026-07-27 (later)
 - Added HISLE Fall 2026 flyer link; all 29 schools now clickable.
+
+## 2026-07-30
+- Replaced base flyer with the vertical 2026 design (1546x2000); flyer now reads 6:45-7:45pm.
+- Re-aligned all 29 school hotspots to the new portrait layout (coordinates measured from image pixels).

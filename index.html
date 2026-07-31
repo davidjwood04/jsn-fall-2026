@@ -85,7 +85,7 @@
       <p>Tap or click your child&rsquo;s elementary school to open its Join Scouting Night flyer.</p>
     </div>
     <div class="stage">
-      <img src="jsn_flyer.png" alt="We Spy Adventure In Your Future! Attend a Join Scouting Night from 6-8pm. School lists by night.">
+      <img src="jsn_flyer.png" alt="We Spy Adventure In Your Future! Join Scouts. Attend a Join Scouting Night 6:45-7:45pm in your elementary cafeteria. School lists by night.">
       <div id="hotspots"></div>
     </div>
     <div class="foot">
@@ -94,16 +94,16 @@
   </div>
 
 <script>
-// ── Layout constants (percent of the 1920x1080 flyer) ──────────────
+// ── Layout constants (percent of the 1546x2000 vertical flyer) ─────
 // Each column has a horizontal center (cx) and clickable width (w).
 // Rows share a common set of vertical centers (cy) top-to-bottom.
 const COL = {
-  tue: { cx: 18.0, w: 23.0 },
-  wed: { cx: 44.6, w: 22.5 },
-  thu: { cx: 70.9, w: 24.0 },
+  tue: { cx: 16.0, w: 23.0 },
+  wed: { cx: 39.0, w: 21.0 },
+  thu: { cx: 64.7, w: 21.0 },
 };
-const ROW_CY = [38.0, 43.4, 48.9, 54.4, 59.8, 65.3, 70.7, 76.2, 81.7, 87.1];
-const HOT_H = 5.0; // clickable height in % of image height
+const ROW_CY = [75.8, 78.15, 80.55, 82.9, 85.25, 87.65, 90.0, 92.35, 94.75, 97.1];
+const HOT_H = 2.2; // clickable height in % of image height
 
 // ── School → 2026 Google Slides flyer (file id) ────────────────────
 // Ordered top-to-bottom within each column, matching the flyer.
