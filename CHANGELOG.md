@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-08-11
+- Added `mttn-followup.html` — post-Meet the Teacher Night team follow-up
+  (Round Table reminder, satellite Round Table dates, signs/flyers, volunteer
+  coverage links, Band group link).
+
 ## 2026-07-27
 - Initial site: single-page Join Scouting Night Fall 2026 flyer (`jsn_flyer.png`)
   with transparent clickable overlays over all 29 school names.
