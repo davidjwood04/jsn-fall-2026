@@ -26,5 +26,4 @@
 - Replaced base flyer image with `jsn-flyer-2026.png` (1545x1999), removing `jsn_flyer.png`.
 - School list changed on the new flyer: HISLE moved from Thursday to Wednesday; LAGO VISTA
   added to Thursday in HISLE's old slot. Now 30 schools total.
-- LAGO VISTA has no Google Slides flyer link yet — its hotspot shows "Coming Soon" until
-  a flyer ID is supplied.
+- Wired up LAGO VISTA's Fall 2026 flyer link; all 30 schools now clickable.
