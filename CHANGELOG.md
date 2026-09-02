@@ -21,3 +21,10 @@
 ## 2026-07-30
 - Replaced base flyer with the vertical 2026 design (1546x2000); flyer now reads 6:45-7:45pm.
 - Re-aligned all 29 school hotspots to the new portrait layout (coordinates measured from image pixels).
+
+## 2026-09-01
+- Replaced base flyer image with `jsn-flyer-2026.png` (1545x1999), removing `jsn_flyer.png`.
+- School list changed on the new flyer: HISLE moved from Thursday to Wednesday; LAGO VISTA
+  added to Thursday in HISLE's old slot. Now 30 schools total.
+- LAGO VISTA has no Google Slides flyer link yet — its hotspot shows "Coming Soon" until
+  a flyer ID is supplied.
