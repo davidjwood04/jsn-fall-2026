@@ -27,3 +27,6 @@
 - School list changed on the new flyer: HISLE moved from Thursday to Wednesday; LAGO VISTA
   added to Thursday in HISLE's old slot. Now 30 schools total.
 - Wired up LAGO VISTA's Fall 2026 flyer link; all 30 schools now clickable.
+- Fixed hotspot alignment: row centers were ~1.7% too low against the new flyer
+  (measured actual text row positions by sampling flyer pixels; row spacing on
+  the new image is also slightly wider than the old one).
