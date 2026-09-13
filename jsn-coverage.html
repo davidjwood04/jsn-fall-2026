@@ -427,9 +427,11 @@
     Source: <a href="https://docs.google.com/spreadsheets/d/14GMM8VAoWEEi2_ZyTUQCrdvrZt_zQVlzaEl2o-XU9aA/edit" target="_blank" rel="noopener">NSD Fall 2026 Volunteer Sign-Ups</a>
     (Volunteer Sign-Ups &amp; Units and Access tabs), last modified Sep 13, 2026. This page is a static snapshot — it does not
     update when the sheet changes; re-open the sheet or ask for a refreshed page for the latest picture.<br>
-    "Confirmed" and "Tentative" reflect the Status column exactly as recorded there; several tentative rows and a few
+    "Confirmed" and "Tentative" reflect the Status column exactly as recorded there.
+    <!-- "Confirmed" and "Tentative" reflect the Status column exactly as recorded there; several tentative rows and a few
     confirmed ones carry a sourcing note (reported secondhand, unconfirmed directly, or a conflicting signal) — expand
-    those before relying on them for the event. Contact details (email, phone) from the source sheet are intentionally
+    those before relying on them for the event. -->
+    Contact details (email, phone) from the source sheet are intentionally
     left off this page.
   </footer>
 </div>
@@ -440,17 +442,17 @@
 
   var ROWS = [
     {unit:"P-150",kind:"pack",date:"2026-09-15",loc:"Rutledge",name:"Michael Scheider",status:"yes",note:""},
-    {unit:"P-150",kind:"pack",date:"2026-09-16",loc:"Reagan",name:"Michael Scheider",status:"yes",note:""},
 
+    {unit:"P-160",kind:"pack",date:"2026-09-15",loc:"North",name:"CJ Mendes",status:"yes",note:""},
     {unit:"P-160",kind:"pack",date:"2026-09-15",loc:"North",name:"Dawnielle Allen",status:"yes",note:""},
-    {unit:"P-160",kind:"pack",date:"2026-09-15",loc:"North",name:"Matthew Geske",status:"maybe",note:"Reported by CJ Mendes's email, not confirmed directly by Matt (his own form said ‘only available for Larkspur’)."},
-    {unit:"P-160",kind:"pack",date:"2026-09-16",loc:"Camacho",name:"Kenneth Kelly",status:"maybe",note:"Reported by CJ Mendes's 8/13 email; not confirmed directly (not cc'd himself)."},
-    {unit:"P-160",kind:"pack",date:"2026-09-16",loc:"Camacho",name:"Bobby Godwin",status:"maybe",note:"Reported by CJ Mendes's 8/13 email; not confirmed directly (not cc'd himself)."},
-    {unit:"P-160",kind:"pack",date:"2026-09-16",loc:"Camacho",name:"Remyngton Allen",status:"maybe",note:"Unclear if he still attends now that parent Dawnielle moved to North/Larkspur — confirm before JSN."},
+    {unit:"P-160",kind:"pack",date:"2026-09-15",loc:"North",name:"Matthew Geske",status:"yes",note:""},
+    {unit:"P-160",kind:"pack",date:"2026-09-16",loc:"Camacho",name:"Kenneth Kelly",status:"yes",note:""},
+    {unit:"P-160",kind:"pack",date:"2026-09-16",loc:"Camacho",name:"Bobby Godwin",status:"yes",note:""},
+    {unit:"P-160",kind:"pack",date:"2026-09-16",loc:"Camacho",name:"Remyngton Allen",status:"maybe",note:""/* was: "Unclear if he still attends now that parent Dawnielle moved to North/Larkspur — confirm before JSN." */},
     {unit:"P-160",kind:"pack",date:"2026-09-16",loc:"Larkspur",name:"Dawnielle Allen",status:"yes",note:""},
-    {unit:"P-160",kind:"pack",date:"2026-09-16",loc:"Larkspur",name:"Matthew Geske",status:"yes",note:""},
-    {unit:"P-160",kind:"pack",date:"2026-09-17",loc:"Plain",name:"Kenneth Kelly",status:"maybe",note:"Reported by CJ Mendes's 8/13 email; not confirmed directly."},
-    {unit:"P-160",kind:"pack",date:"2026-09-17",loc:"Plain",name:"Bobby Godwin",status:"maybe",note:"Reported by CJ Mendes's 8/13 email; not confirmed directly."},
+    {unit:"P-160",kind:"pack",date:"2026-09-16",loc:"Larkspur",name:"Doug Allen",status:"yes",note:""},
+    {unit:"P-160",kind:"pack",date:"2026-09-17",loc:"Plain",name:"Kenneth Kelly",status:"yes",note:""},
+    {unit:"P-160",kind:"pack",date:"2026-09-17",loc:"Plain",name:"Bobby Godwin",status:"yes",note:""},
 
     {unit:"P-170",kind:"pack",date:"2026-09-15",loc:"Whitestone",name:"Marco Family",status:"yes",note:""},
     {unit:"P-170",kind:"pack",date:"2026-09-15",loc:"Whitestone",name:"Perkins Family",status:"yes",note:""},
@@ -466,6 +468,9 @@
     {unit:"P-171",kind:"pack",date:"2026-09-17",loc:"Pleasant Hill",name:"Brian Talbot",status:"yes",note:""},
 
     {unit:"P-172",kind:"pack",date:"2026-09-15",loc:"Cypress",name:"Keri Burns",status:"yes",note:""},
+    {unit:"P-172",kind:"pack",date:"2026-09-15",loc:"Cypress",name:"Charles Frank",status:"yes",note:""},
+    {unit:"P-172",kind:"pack",date:"2026-09-17",loc:"Naumann",name:"Keri Burns",status:"yes",note:""},
+    {unit:"P-172",kind:"pack",date:"2026-09-17",loc:"Naumann",name:"Charles Frank",status:"yes",note:""},
 
     {unit:"P-1277",kind:"pack",date:"2026-09-15",loc:"Cox",name:"Nicholas Souza",status:"yes",note:""},
     {unit:"P-1277",kind:"pack",date:"2026-09-15",loc:"Cox",name:"Kathy Rogers",status:"yes",note:""},
@@ -478,12 +483,15 @@
     {unit:"P-2008",kind:"pack",date:"2026-09-15",loc:"Bagdad",name:"Neil Martinez",status:"yes",note:""},
     {unit:"P-2008",kind:"pack",date:"2026-09-15",loc:"Bagdad",name:"Logan (McCoy)",status:"yes",note:""},
     {unit:"P-2008",kind:"pack",date:"2026-09-15",loc:"Bagdad",name:"Santos (Martinez)",status:"yes",note:""},
+    {unit:"P-2008",kind:"pack",date:"2026-09-17",loc:"Westside",name:"Paul",status:"yes",note:""/* was: "Same name, date, and location as a Westside entry also listed under T-258 / T-358 — worth confirming this isn't a duplicate rather than two different people." */},
+    {unit:"P-2008",kind:"pack",date:"2026-09-17",loc:"Westside",name:"Mahilisai",status:"yes",note:""/* was: "Same name, date, and location as a Westside entry also listed under T-258 / T-358 — worth confirming this isn't a duplicate rather than two different people." */},
+    {unit:"P-2008",kind:"pack",date:"2026-09-17",loc:"Westside",name:"Diya",status:"yes",note:""/* was: "Same name, date, and location as a Westside entry also listed under T-258 / T-358 — worth confirming this isn't a duplicate rather than two different people." */},
 
     {unit:"P-233",kind:"pack",date:"2026-09-15",loc:"Tarvin",name:"Nethra Tantrigoda",status:"yes",note:""},
     {unit:"P-233",kind:"pack",date:"2026-09-16",loc:"Akin",name:"Wesley Flower",status:"yes",note:""},
     {unit:"P-233",kind:"pack",date:"2026-09-17",loc:"Parkside",name:"Daniel Jimenez",status:"yes",note:""},
 
-    {unit:"T-91",kind:"troop",date:"2026-09-16",loc:"Mason",name:"Erich Hauptli",status:"yes",note:"His own note: JSN night uncertain (he expects to be at Mason with his daughter for a different reason)."},
+    {unit:"T-91",kind:"troop",date:"2026-09-16",loc:"Mason",name:"Erich Hauptli",status:"yes",note:""/* was: "His own note: JSN night uncertain (he expects to be at Mason with his daughter for a different reason)." */},
     {unit:"T-91",kind:"troop",date:"2026-09-16",loc:"Akin",name:"Christian M.",status:"yes",note:""},
 
     {unit:"T-161",kind:"troop",date:"2026-09-17",loc:"Hisle",name:"Bianca Beadles",status:"yes",note:""},
@@ -496,7 +504,7 @@
     {unit:"T-171",kind:"troop",date:"2026-09-17",loc:"Pleasant Hill",name:"Ben N.",status:"yes",note:""},
     {unit:"T-171",kind:"troop",date:"2026-09-17",loc:"Pleasant Hill",name:"Joey N.",status:"yes",note:""},
 
-    {unit:"T-202",kind:"troop",date:"2026-09-17",loc:"Hisle",name:"Aaron Garrett",status:"maybe",note:"Plausible fit per his 8/8 form, but not formally assigned to Hisle yet."},
+    {unit:"T-202",kind:"troop",date:"2026-09-17",loc:"Hisle",name:"Aaron Garrett",status:"maybe",note:""/* was: "Plausible fit per his 8/8 form, but not formally assigned to Hisle yet." */},
 
     {unit:"T-258 / T-358",kind:"troop",date:"2026-09-15",loc:"Block House Creek",name:"Lillian W.",status:"yes",note:""},
     {unit:"T-258 / T-358",kind:"troop",date:"2026-09-16",loc:"Giddens",name:"Lillian W.",status:"yes",note:""},
@@ -509,27 +517,27 @@
 
   // Units with zero JSN-night sign-ups recorded, from the "Units & Access" tab.
   var ZERO_UNITS = [
-    {unit:"P-161",kind:"pack",lastConfirmed:"2026-08-04",contactName:"Summer Jones",note:"On-file contact is the Council District Executive — not a unit member. Worth confirming she's actually who you want here."},
+    {unit:"P-161",kind:"pack",lastConfirmed:"2026-08-04",contactName:"Summer Jones",note:""/* was: "On-file contact is the Council District Executive — not a unit member. Worth confirming she's actually who you want here." */},
     {unit:"P-201",kind:"pack",lastConfirmed:"2026-08-08",contactName:"Matthew Haneman",note:""},
     {unit:"T-198",kind:"troop",lastConfirmed:"2026-08-07",contactName:"Geri McCarthy",note:""}
   ];
 
   // Footnotes / provenance from the "Units & Access" tab, for units that DID report volunteers.
   var UNIT_META = {
-    "P-150": {lastConfirmed:"2026-07-07", note:"Only one contact on file for this pack."},
-    "P-160": {lastConfirmed:"2026-08-13", note:"CJ Mendes is marked WITHDRAWN in the source and excluded. Bobby Godwin has no email on file."},
-    "P-170": {lastConfirmed:"2026-08-17", note:"14 “Family” placeholder entries in the source carry no contact info at all — only Lacy Putnam has an email."},
-    "P-171": {lastConfirmed:"2026-08-03", note:"Brian Talbot's email is sourced only from a district distribution list and is unverified. Kyle Bickling is confirmed."},
-    "P-172": {lastConfirmed:"2026-08-17", note:"Additional unit contacts on file, not listed as JSN volunteers: Matt Meyers, Vanessa McGee, Timothy Salmon."},
-    "P-1277": {lastConfirmed:"2026-05-20 to 2026-08-09", note:"Contacts confirmed on different dates: Cody Fuller (5/20), Nicholas Souza (5/20), Kathy Rogers (8/9)."},
+    "P-150": {lastConfirmed:"2026-07-07", note:""/* was: "Only one contact on file for this pack." */},
+    "P-160": {lastConfirmed:"2026-08-13", note:""/* was: "CJ Mendes is marked WITHDRAWN in the source and excluded. Bobby Godwin has no email on file." */},
+    "P-170": {lastConfirmed:"2026-08-17", note:""/* was: "14 “Family” placeholder entries in the source carry no contact info at all — only Lacy Putnam has an email." */},
+    "P-171": {lastConfirmed:"2026-08-03", note:""/* was: "Brian Talbot's email is sourced only from a district distribution list and is unverified. Kyle Bickling is confirmed." */},
+    "P-172": {lastConfirmed:"2026-08-17", note:""/* was: "Additional unit contacts on file, not listed as JSN volunteers: Matt Meyers, Vanessa McGee, Timothy Salmon. Charles Frank has no contact on file." */},
+    "P-1277": {lastConfirmed:"2026-05-20 to 2026-08-09", note:""/* was: "Contacts confirmed on different dates: Cody Fuller (5/20), Nicholas Souza (5/20), Kathy Rogers (8/9)." */},
     "P-1720": {lastConfirmed:"2026-08-09", note:""},
-    "P-2008": {lastConfirmed:"2026-08-10 to 2026-08-17", note:"Additional unit contacts on file, not listed as JSN volunteers: Lauren Duncan, Jeff Duncan."},
-    "P-233": {lastConfirmed:"2026-07-16 to 2026-08-08", note:"Justin Pickens (Cubmaster) is on file as a contact but has no direct confirmation."},
-    "T-91": {lastConfirmed:"2026-08-04 to 2026-08-08", note:"Additional unit contacts on file, not listed as JSN volunteers: Jennifer Fortenberry, Jim Whiteaker."},
-    "T-161": {lastConfirmed:"2026-08-09 to 2026-08-17", note:"The troop email on file (Nicole Weiss) bounced once, per the source notes."},
-    "T-171": {lastConfirmed:"2026-09-12", note:"No contact exists in the source Volunteers tab for this troop — its unit contact was given directly by Dave, not pulled from the sheet."},
+    "P-2008": {lastConfirmed:"2026-08-10 to 2026-08-17", note:""/* was: "Additional unit contacts on file, not listed as JSN volunteers: Lauren Duncan, Jeff Duncan." */},
+    "P-233": {lastConfirmed:"2026-07-16 to 2026-08-08", note:""/* was: "Justin Pickens (Cubmaster) is on file as a contact but has no direct confirmation." */},
+    "T-91": {lastConfirmed:"2026-08-04 to 2026-08-08", note:""/* was: "Additional unit contacts on file, not listed as JSN volunteers: Jennifer Fortenberry, Jim Whiteaker." */},
+    "T-161": {lastConfirmed:"2026-08-09 to 2026-08-17", note:""/* was: "The troop email on file (Nicole Weiss) bounced once, per the source notes." */},
+    "T-171": {lastConfirmed:"2026-09-12", note:""/* was: "No contact exists in the source Volunteers tab for this troop — its unit contact was given directly by Dave, not pulled from the sheet." */},
     "T-202": {lastConfirmed:"2026-08-08", note:""},
-    "T-258 / T-358": {lastConfirmed:"2026-05-18", note:"Mehria Smith is the one combined point of contact for both troops; no separate contact exists for either alone."}
+    "T-258 / T-358": {lastConfirmed:"2026-05-18", note:""/* was: "Mehria Smith is the one combined point of contact for both troops; no separate contact exists for either alone." */}
   };
 
   var DATES = [
