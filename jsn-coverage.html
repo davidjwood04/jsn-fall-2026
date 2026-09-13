@@ -1,0 +1,752 @@
+<title>JSN Night Coverage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ============ TOKENS ============ */
+  :root{
+    --bg: #EEEFE2;
+    --bg-contour: #dfe1cd;
+    --surface: #FBFBF4;
+    --surface-2: #E6E7D6;
+    --ink: #202A20;
+    --ink-2: #4A5647;
+    --ink-3: #7B8672;
+    --border: #D2D5BE;
+    --primary: #2E5339;
+    --primary-strong: #1D3A26;
+    --primary-tint: #E1E9DF;
+    --accent: #B85A22;
+    --accent-tint: #F3E1D2;
+    --good: #3E7D45;
+    --good-tint: #DEEBDD;
+    --warn: #A6740C;
+    --warn-tint: #F3E6C4;
+    --crit: #A83B2E;
+    --crit-tint: #F4DDD8;
+    --focus: #3E6BB0;
+    --shadow: 0 1px 2px rgba(32,42,32,.06), 0 4px 14px rgba(32,42,32,.05);
+    --radius: 12px;
+    --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+    --font-body: "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg: #12160E;
+      --bg-contour: #191f12;
+      --surface: #1A2016;
+      --surface-2: #222A1C;
+      --ink: #EBEEE2;
+      --ink-2: #B7C0AC;
+      --ink-3: #7E8973;
+      --border: #333D2A;
+      --primary: #7BB388;
+      --primary-strong: #9BCBA5;
+      --primary-tint: #202E22;
+      --accent: #E3A876;
+      --accent-tint: #33261B;
+      --good: #6FBB77;
+      --good-tint: #1D2E1E;
+      --warn: #D9AE4C;
+      --warn-tint: #322A15;
+      --crit: #E08172;
+      --crit-tint: #33201C;
+      --focus: #8FB6E8;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg: #12160E;
+    --bg-contour: #191f12;
+    --surface: #1A2016;
+    --surface-2: #222A1C;
+    --ink: #EBEEE2;
+    --ink-2: #B7C0AC;
+    --ink-3: #7E8973;
+    --border: #333D2A;
+    --primary: #7BB388;
+    --primary-strong: #9BCBA5;
+    --primary-tint: #202E22;
+    --accent: #E3A876;
+    --accent-tint: #33261B;
+    --good: #6FBB77;
+    --good-tint: #1D2E1E;
+    --warn: #D9AE4C;
+    --warn-tint: #322A15;
+    --crit: #E08172;
+    --crit-tint: #33201C;
+    --focus: #8FB6E8;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    font-size:15.5px;
+    line-height:1.5;
+    padding-inline:20px;
+  }
+  @media (min-width:720px){ body{ padding-inline:32px; } }
+  .wrap{max-width:1080px;margin:0 auto;}
+  h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0;}
+  a{color:inherit;}
+  button{font-family:inherit;}
+  ::selection{background:var(--primary-tint);}
+  :focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:4px;}
+  .mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums;}
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.01ms !important;transition-duration:.01ms !important;}
+  }
+
+  /* ============ HEADER ============ */
+  .masthead{
+    position:relative;
+    padding:28px 0 22px;
+    border-bottom:1px solid var(--border);
+    background-image: repeating-radial-gradient(circle at 15% 20%, var(--bg-contour) 0 1px, transparent 1px 34px);
+    background-position:0 0;
+  }
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:12px;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    color:var(--primary);
+    font-weight:500;
+  }
+  .masthead h1{
+    font-size:clamp(28px,4.6vw,42px);
+    font-weight:600;
+    color:var(--ink);
+    margin-top:6px;
+    max-width:min(30ch, 90vw);
+  }
+  .masthead .meta{
+    margin-top:10px;
+    color:var(--ink-2);
+    font-size:14.5px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px 16px;
+    align-items:center;
+  }
+  .countdown{
+    display:inline-flex;
+    align-items:baseline;
+    gap:6px;
+    background:var(--accent-tint);
+    color:var(--accent);
+    border:1px solid var(--accent);
+    border-radius:999px;
+    padding:3px 12px;
+    font-family:var(--font-mono);
+    font-weight:500;
+    font-size:13px;
+  }
+
+  /* ============ ALERT BANNER ============ */
+  .alert{
+    margin-top:22px;
+    border:1px solid var(--crit);
+    background:var(--crit-tint);
+    border-radius:var(--radius);
+    padding:16px 18px;
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+  }
+  .alert .flag{
+    font-size:20px;
+    line-height:1;
+    margin-top:1px;
+  }
+  .alert h3{font-size:15.5px;color:var(--crit);font-family:var(--font-body);font-weight:700;}
+  .alert p{margin:4px 0 10px;color:var(--ink-2);font-size:14px;}
+  .alert-units{display:flex;flex-wrap:wrap;gap:8px;}
+  .alert-unit{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:8px 12px;
+    font-size:13.5px;
+  }
+  .alert-unit b{font-family:var(--font-mono);color:var(--ink);}
+  .alert-unit .contact-line{display:block;margin-top:2px;color:var(--ink-2);}
+  .none{font-style:italic;color:var(--ink-3);}
+
+  /* ============ STAT STRIP ============ */
+  .stats{
+    margin-top:22px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(128px,1fr));
+    gap:10px;
+  }
+  .stat{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:13px 14px;
+    box-shadow:var(--shadow);
+  }
+  .stat .n{
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:26px;
+    font-variant-numeric:tabular-nums;
+  }
+  .stat .l{
+    font-size:12px;
+    color:var(--ink-2);
+    margin-top:2px;
+    letter-spacing:.02em;
+  }
+  .stat.good .n{color:var(--good);}
+  .stat.warn .n{color:var(--warn);}
+  .stat.crit .n{color:var(--crit);}
+
+  /* ============ CONTROLS ============ */
+  .controls{
+    margin-top:26px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    align-items:center;
+  }
+  .search{
+    flex:1 1 220px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:9px 13px;
+  }
+  .search svg{flex:none;color:var(--ink-3);}
+  .search input{
+    border:0;background:transparent;color:var(--ink);
+    font-family:var(--font-body);font-size:14.5px;width:100%;
+  }
+  .search input:focus{outline:none;}
+  .chipset{display:flex;gap:6px;flex-wrap:wrap;}
+  .chip{
+    border:1px solid var(--border);
+    background:var(--surface);
+    color:var(--ink-2);
+    border-radius:999px;
+    padding:7px 13px;
+    font-size:13px;
+    cursor:pointer;
+    font-weight:500;
+    white-space:nowrap;
+  }
+  .chip[aria-pressed="true"]{
+    background:var(--primary);
+    border-color:var(--primary);
+    color:var(--surface);
+  }
+  .chip.status-good[aria-pressed="true"]{background:var(--good);border-color:var(--good);}
+  .chip.status-warn[aria-pressed="true"]{background:var(--warn);border-color:var(--warn);}
+  .chip.status-crit[aria-pressed="true"]{background:var(--crit);border-color:var(--crit);}
+
+  /* ============ VIEW TABS ============ */
+  .viewtabs{
+    margin-top:22px;
+    display:flex;
+    gap:4px;
+    border-bottom:2px solid var(--border);
+  }
+  .viewtab{
+    background:none;border:0;
+    padding:9px 4px;margin-right:20px;
+    font-size:15px;font-weight:600;color:var(--ink-3);
+    cursor:pointer;position:relative;top:2px;
+    border-bottom:2px solid transparent;
+  }
+  .viewtab[aria-selected="true"]{color:var(--primary);border-bottom-color:var(--primary);}
+  .view{display:none;margin-top:20px;}
+  .view.active{display:block;}
+
+  /* ============ NIGHT SUBTABS ============ */
+  .nighttabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+  .nighttab{
+    border:1px solid var(--border);background:var(--surface);
+    border-radius:10px;padding:10px 16px;cursor:pointer;text-align:left;
+  }
+  .nighttab[aria-selected="true"]{border-color:var(--primary);background:var(--primary-tint);}
+  .nighttab .d{font-weight:700;font-size:14.5px;}
+  .nighttab .s{display:block;font-size:12px;color:var(--ink-2);font-family:var(--font-mono);margin-top:1px;}
+  .nightpanel{display:none;}
+  .nightpanel.active{display:block;}
+
+  .stations{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+    gap:14px;
+  }
+  .station{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:14px 16px;
+    box-shadow:var(--shadow);
+  }
+  .station-head{
+    display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+    border-bottom:1px dashed var(--border);
+    padding-bottom:9px;margin-bottom:10px;
+  }
+  .station-head h4{font-family:var(--font-body);font-size:15.5px;font-weight:700;}
+  .station-count{font-family:var(--font-mono);font-size:12px;color:var(--ink-3);white-space:nowrap;}
+  .volunteer{padding:7px 0;border-bottom:1px solid var(--border);}
+  .volunteer:last-child{border-bottom:0;padding-bottom:0;}
+  .volunteer:first-child{padding-top:0;}
+  .v-top{display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+  .v-name{font-weight:600;font-size:14px;}
+  .unit-tag{
+    font-family:var(--font-mono);font-size:11.5px;color:var(--ink-2);
+    background:var(--surface-2);border-radius:5px;padding:1px 6px;
+  }
+  .pill{
+    font-size:11px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;
+    border-radius:999px;padding:2px 9px;
+  }
+  .pill.yes{background:var(--good-tint);color:var(--good);}
+  .pill.maybe{background:var(--warn-tint);color:var(--warn);}
+  .flag-note{color:var(--crit);cursor:help;font-size:13px;}
+  .v-note{
+    margin-top:4px;font-size:12.5px;color:var(--ink-2);
+    background:var(--surface-2);border-left:2px solid var(--crit);
+    padding:5px 8px;border-radius:0 6px 6px 0;
+  }
+  .empty-note{color:var(--ink-3);font-size:13.5px;padding:6px 0;}
+
+  /* ============ UNIT VIEW ============ */
+  .unit-section h3{
+    font-size:13px;text-transform:uppercase;letter-spacing:.08em;
+    color:var(--ink-3);font-family:var(--font-body);font-weight:700;
+    margin:24px 0 10px;
+  }
+  .unit-section:first-child h3{margin-top:0;}
+  .units-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+    gap:14px;
+  }
+  .unitcard{
+    background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow);
+  }
+  .unitcard.zero{border-style:dashed;border-color:var(--crit);}
+  .unit-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+  .unit-head h4{font-family:var(--font-mono);font-size:16px;font-weight:500;}
+  .unit-counts{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;}
+  .last-conf{
+    font-family:var(--font-mono);font-size:11px;color:var(--ink-3);
+    margin-top:3px;
+  }
+  .unit-rows{margin-top:10px;}
+  .unit-row{padding:6px 0;border-top:1px solid var(--border);font-size:13.5px;}
+  .unit-row .loc-date{color:var(--ink-2);font-family:var(--font-mono);font-size:11.5px;}
+  .footnote{
+    margin-top:10px;font-size:12.5px;color:var(--ink-2);
+    background:var(--surface-2);padding:7px 9px;border-radius:8px;
+  }
+  .zero-state{
+    margin-top:8px;font-size:13.5px;color:var(--crit);font-weight:600;
+  }
+  .onfile{margin-top:6px;font-size:12.5px;color:var(--ink-2);}
+
+  /* ============ FOOTER ============ */
+  footer{
+    margin:40px 0 32px;
+    padding-top:18px;
+    border-top:1px solid var(--border);
+    font-size:12.5px;
+    color:var(--ink-3);
+    line-height:1.7;
+  }
+  footer a{color:var(--focus);}
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <div class="eyebrow">Capitol Area Council &middot; North Shore District</div>
+    <h1>Join Scouting Night — Volunteer Coverage</h1>
+    <div class="meta">
+      <span>Three nights &middot; <span class="mono">Sep 15–17, 2026</span></span>
+      <span class="countdown" id="countdown"></span>
+      <span>Snapshot as of <span class="mono">Sep 13, 2026</span></span>
+    </div>
+  </header>
+
+  <div id="alertBanner"></div>
+
+  <section class="stats" id="stats"></section>
+
+  <div class="controls">
+    <label class="search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="searchBox" type="text" placeholder="Search unit, school, or volunteer…" autocomplete="off">
+    </label>
+    <div class="chipset" id="statusChips">
+      <button class="chip" data-status="all" aria-pressed="true">All</button>
+      <button class="chip status-good" data-status="yes" aria-pressed="false">Confirmed</button>
+      <button class="chip status-warn" data-status="maybe" aria-pressed="false">Tentative</button>
+      <button class="chip status-crit" data-status="flagged" aria-pressed="false">Has a note</button>
+    </div>
+  </div>
+
+  <div class="viewtabs" role="tablist">
+    <button class="viewtab" role="tab" data-view="night" aria-selected="true">By night</button>
+    <button class="viewtab" role="tab" data-view="unit" aria-selected="false">By unit</button>
+  </div>
+
+  <section class="view active" id="view-night">
+    <div class="nighttabs" id="nightTabs"></div>
+    <div id="nightPanels"></div>
+  </section>
+
+  <section class="view" id="view-unit">
+    <div class="unit-section">
+      <h3>Packs</h3>
+      <div class="units-grid" id="packGrid"></div>
+    </div>
+    <div class="unit-section">
+      <h3>Troops</h3>
+      <div class="units-grid" id="troopGrid"></div>
+    </div>
+  </section>
+
+  <footer>
+    Source: <a href="https://docs.google.com/spreadsheets/d/14GMM8VAoWEEi2_ZyTUQCrdvrZt_zQVlzaEl2o-XU9aA/edit" target="_blank" rel="noopener">NSD Fall 2026 Volunteer Sign-Ups</a>
+    (Volunteer Sign-Ups &amp; Units and Access tabs), last modified Sep 13, 2026. This page is a static snapshot — it does not
+    update when the sheet changes; re-open the sheet or ask for a refreshed page for the latest picture.<br>
+    "Confirmed" and "Tentative" reflect the Status column exactly as recorded there; several tentative rows and a few
+    confirmed ones carry a sourcing note (reported secondhand, unconfirmed directly, or a conflicting signal) — expand
+    those before relying on them for the event. Contact details (email, phone) from the source sheet are intentionally
+    left off this page.
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var ROWS = [
+    {unit:"P-150",kind:"pack",date:"2026-09-15",loc:"Rutledge",name:"Michael Scheider",status:"yes",note:""},
+    {unit:"P-150",kind:"pack",date:"2026-09-16",loc:"Reagan",name:"Michael Scheider",status:"yes",note:""},
+
+    {unit:"P-160",kind:"pack",date:"2026-09-15",loc:"North",name:"Dawnielle Allen",status:"yes",note:""},
+    {unit:"P-160",kind:"pack",date:"2026-09-15",loc:"North",name:"Matthew Geske",status:"maybe",note:"Reported by CJ Mendes's email, not confirmed directly by Matt (his own form said ‘only available for Larkspur’)."},
+    {unit:"P-160",kind:"pack",date:"2026-09-16",loc:"Camacho",name:"Kenneth Kelly",status:"maybe",note:"Reported by CJ Mendes's 8/13 email; not confirmed directly (not cc'd himself)."},
+    {unit:"P-160",kind:"pack",date:"2026-09-16",loc:"Camacho",name:"Bobby Godwin",status:"maybe",note:"Reported by CJ Mendes's 8/13 email; not confirmed directly (not cc'd himself)."},
+    {unit:"P-160",kind:"pack",date:"2026-09-16",loc:"Camacho",name:"Remyngton Allen",status:"maybe",note:"Unclear if he still attends now that parent Dawnielle moved to North/Larkspur — confirm before JSN."},
+    {unit:"P-160",kind:"pack",date:"2026-09-16",loc:"Larkspur",name:"Dawnielle Allen",status:"yes",note:""},
+    {unit:"P-160",kind:"pack",date:"2026-09-16",loc:"Larkspur",name:"Matthew Geske",status:"yes",note:""},
+    {unit:"P-160",kind:"pack",date:"2026-09-17",loc:"Plain",name:"Kenneth Kelly",status:"maybe",note:"Reported by CJ Mendes's 8/13 email; not confirmed directly."},
+    {unit:"P-160",kind:"pack",date:"2026-09-17",loc:"Plain",name:"Bobby Godwin",status:"maybe",note:"Reported by CJ Mendes's 8/13 email; not confirmed directly."},
+
+    {unit:"P-170",kind:"pack",date:"2026-09-15",loc:"Whitestone",name:"Marco Family",status:"yes",note:""},
+    {unit:"P-170",kind:"pack",date:"2026-09-15",loc:"Whitestone",name:"Perkins Family",status:"yes",note:""},
+    {unit:"P-170",kind:"pack",date:"2026-09-15",loc:"Whitestone",name:"Lacy Putnam",status:"yes",note:""},
+    {unit:"P-170",kind:"pack",date:"2026-09-16",loc:"Mason",name:"Alderson Family",status:"yes",note:""},
+    {unit:"P-170",kind:"pack",date:"2026-09-16",loc:"Mason",name:"Lacy Putnam",status:"yes",note:""},
+    {unit:"P-170",kind:"pack",date:"2026-09-17",loc:"Winkley",name:"Schumacher Family",status:"yes",note:""},
+    {unit:"P-170",kind:"pack",date:"2026-09-17",loc:"Winkley",name:"Young / Scheppan Family",status:"yes",note:""},
+    {unit:"P-170",kind:"pack",date:"2026-09-17",loc:"Winkley",name:"Lacy Putnam",status:"yes",note:""},
+
+    {unit:"P-171",kind:"pack",date:"2026-09-15",loc:"Block House Creek",name:"Kyle Bickling",status:"yes",note:""},
+    {unit:"P-171",kind:"pack",date:"2026-09-16",loc:"Giddens",name:"Kyle Bickling",status:"yes",note:""},
+    {unit:"P-171",kind:"pack",date:"2026-09-17",loc:"Pleasant Hill",name:"Brian Talbot",status:"yes",note:""},
+
+    {unit:"P-172",kind:"pack",date:"2026-09-15",loc:"Cypress",name:"Keri Burns",status:"yes",note:""},
+
+    {unit:"P-1277",kind:"pack",date:"2026-09-15",loc:"Cox",name:"Nicholas Souza",status:"yes",note:""},
+    {unit:"P-1277",kind:"pack",date:"2026-09-15",loc:"Cox",name:"Kathy Rogers",status:"yes",note:""},
+    {unit:"P-1277",kind:"pack",date:"2026-09-17",loc:"Reed",name:"Cody Fuller",status:"yes",note:""},
+    {unit:"P-1277",kind:"pack",date:"2026-09-17",loc:"Reed",name:"Konrad Fuller",status:"yes",note:""},
+
+    {unit:"P-1720",kind:"pack",date:"2026-09-15",loc:"Deer Creek",name:"Carl DeAngelo",status:"yes",note:""},
+
+    {unit:"P-2008",kind:"pack",date:"2026-09-15",loc:"Bagdad",name:"Arthur McCoy",status:"yes",note:""},
+    {unit:"P-2008",kind:"pack",date:"2026-09-15",loc:"Bagdad",name:"Neil Martinez",status:"yes",note:""},
+    {unit:"P-2008",kind:"pack",date:"2026-09-15",loc:"Bagdad",name:"Logan (McCoy)",status:"yes",note:""},
+    {unit:"P-2008",kind:"pack",date:"2026-09-15",loc:"Bagdad",name:"Santos (Martinez)",status:"yes",note:""},
+
+    {unit:"P-233",kind:"pack",date:"2026-09-15",loc:"Tarvin",name:"Nethra Tantrigoda",status:"yes",note:""},
+    {unit:"P-233",kind:"pack",date:"2026-09-16",loc:"Akin",name:"Wesley Flower",status:"yes",note:""},
+    {unit:"P-233",kind:"pack",date:"2026-09-17",loc:"Parkside",name:"Daniel Jimenez",status:"yes",note:""},
+
+    {unit:"T-91",kind:"troop",date:"2026-09-16",loc:"Mason",name:"Erich Hauptli",status:"yes",note:"His own note: JSN night uncertain (he expects to be at Mason with his daughter for a different reason)."},
+    {unit:"T-91",kind:"troop",date:"2026-09-16",loc:"Akin",name:"Christian M.",status:"yes",note:""},
+
+    {unit:"T-161",kind:"troop",date:"2026-09-17",loc:"Hisle",name:"Bianca Beadles",status:"yes",note:""},
+    {unit:"T-161",kind:"troop",date:"2026-09-17",loc:"Hisle",name:"Raiden Beadles",status:"yes",note:""},
+
+    {unit:"T-171",kind:"troop",date:"2026-09-17",loc:"",name:"Andrew W.",status:"yes",note:""},
+    {unit:"T-171",kind:"troop",date:"2026-09-15",loc:"Block House Creek",name:"Andrew W.",status:"yes",note:""},
+    {unit:"T-171",kind:"troop",date:"2026-09-16",loc:"Giddens",name:"Andrew W.",status:"yes",note:""},
+    {unit:"T-171",kind:"troop",date:"2026-09-17",loc:"Pleasant Hill",name:"Matt Nelsen",status:"yes",note:""},
+    {unit:"T-171",kind:"troop",date:"2026-09-17",loc:"Pleasant Hill",name:"Ben N.",status:"yes",note:""},
+    {unit:"T-171",kind:"troop",date:"2026-09-17",loc:"Pleasant Hill",name:"Joey N.",status:"yes",note:""},
+
+    {unit:"T-202",kind:"troop",date:"2026-09-17",loc:"Hisle",name:"Aaron Garrett",status:"maybe",note:"Plausible fit per his 8/8 form, but not formally assigned to Hisle yet."},
+
+    {unit:"T-258 / T-358",kind:"troop",date:"2026-09-15",loc:"Block House Creek",name:"Lillian W.",status:"yes",note:""},
+    {unit:"T-258 / T-358",kind:"troop",date:"2026-09-16",loc:"Giddens",name:"Lillian W.",status:"yes",note:""},
+    {unit:"T-258 / T-358",kind:"troop",date:"2026-09-17",loc:"Naumann",name:"Mehria Smith",status:"yes",note:""},
+    {unit:"T-258 / T-358",kind:"troop",date:"2026-09-17",loc:"Naumann",name:"Siddharth",status:"yes",note:""},
+    {unit:"T-258 / T-358",kind:"troop",date:"2026-09-17",loc:"Westside",name:"Paul",status:"yes",note:""},
+    {unit:"T-258 / T-358",kind:"troop",date:"2026-09-17",loc:"Westside",name:"Mahilisai",status:"yes",note:""},
+    {unit:"T-258 / T-358",kind:"troop",date:"2026-09-17",loc:"Westside",name:"Diya",status:"yes",note:""}
+  ];
+
+  // Units with zero JSN-night sign-ups recorded, from the "Units & Access" tab.
+  var ZERO_UNITS = [
+    {unit:"P-161",kind:"pack",lastConfirmed:"2026-08-04",contactName:"Summer Jones",note:"On-file contact is the Council District Executive — not a unit member. Worth confirming she's actually who you want here."},
+    {unit:"P-201",kind:"pack",lastConfirmed:"2026-08-08",contactName:"Matthew Haneman",note:""},
+    {unit:"T-198",kind:"troop",lastConfirmed:"2026-08-07",contactName:"Geri McCarthy",note:""}
+  ];
+
+  // Footnotes / provenance from the "Units & Access" tab, for units that DID report volunteers.
+  var UNIT_META = {
+    "P-150": {lastConfirmed:"2026-07-07", note:"Only one contact on file for this pack."},
+    "P-160": {lastConfirmed:"2026-08-13", note:"CJ Mendes is marked WITHDRAWN in the source and excluded. Bobby Godwin has no email on file."},
+    "P-170": {lastConfirmed:"2026-08-17", note:"14 “Family” placeholder entries in the source carry no contact info at all — only Lacy Putnam has an email."},
+    "P-171": {lastConfirmed:"2026-08-03", note:"Brian Talbot's email is sourced only from a district distribution list and is unverified. Kyle Bickling is confirmed."},
+    "P-172": {lastConfirmed:"2026-08-17", note:"Additional unit contacts on file, not listed as JSN volunteers: Matt Meyers, Vanessa McGee, Timothy Salmon."},
+    "P-1277": {lastConfirmed:"2026-05-20 to 2026-08-09", note:"Contacts confirmed on different dates: Cody Fuller (5/20), Nicholas Souza (5/20), Kathy Rogers (8/9)."},
+    "P-1720": {lastConfirmed:"2026-08-09", note:""},
+    "P-2008": {lastConfirmed:"2026-08-10 to 2026-08-17", note:"Additional unit contacts on file, not listed as JSN volunteers: Lauren Duncan, Jeff Duncan."},
+    "P-233": {lastConfirmed:"2026-07-16 to 2026-08-08", note:"Justin Pickens (Cubmaster) is on file as a contact but has no direct confirmation."},
+    "T-91": {lastConfirmed:"2026-08-04 to 2026-08-08", note:"Additional unit contacts on file, not listed as JSN volunteers: Jennifer Fortenberry, Jim Whiteaker."},
+    "T-161": {lastConfirmed:"2026-08-09 to 2026-08-17", note:"The troop email on file (Nicole Weiss) bounced once, per the source notes."},
+    "T-171": {lastConfirmed:"2026-09-12", note:"No contact exists in the source Volunteers tab for this troop — its unit contact was given directly by Dave, not pulled from the sheet."},
+    "T-202": {lastConfirmed:"2026-08-08", note:""},
+    "T-258 / T-358": {lastConfirmed:"2026-05-18", note:"Mehria Smith is the one combined point of contact for both troops; no separate contact exists for either alone."}
+  };
+
+  var DATES = [
+    {key:"2026-09-15", label:"Tuesday", short:"Sep 15"},
+    {key:"2026-09-16", label:"Wednesday", short:"Sep 16"},
+    {key:"2026-09-17", label:"Thursday", short:"Sep 17"}
+  ];
+
+  function esc(s){
+    return String(s==null?"":s).replace(/[&<>"]/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];
+    });
+  }
+  function unitNum(u){ var m = u.match(/(\d+)/); return m ? parseInt(m[1],10) : 0; }
+
+  /* ---------- countdown ---------- */
+  (function(){
+    var today = new Date("2026-09-13T00:00:00");
+    var evt = new Date("2026-09-15T00:00:00");
+    var days = Math.round((evt-today)/86400000);
+    document.getElementById("countdown").textContent =
+      days > 0 ? ("Night 1 in " + days + " day" + (days===1?"":"s")) : "Underway";
+  })();
+
+  /* ---------- derived stats ---------- */
+  var totalUnits = ZERO_UNITS.length + Object.keys(UNIT_META).length; // 3 + 14 = 17
+  var reportingUnits = Object.keys(UNIT_META).length;
+  var yesCount = ROWS.filter(function(r){return r.status==="yes";}).length;
+  var maybeCount = ROWS.filter(function(r){return r.status==="maybe";}).length;
+  var locSet = {}; ROWS.forEach(function(r){ if(r.loc) locSet[r.loc]=1; });
+  var locCount = Object.keys(locSet).length;
+  var nameSet = {}; ROWS.forEach(function(r){ nameSet[r.name.trim().toLowerCase()]=1; });
+  var peopleCount = Object.keys(nameSet).length;
+
+  function renderStats(){
+    var tiles = [
+      {n:totalUnits, l:"Units in district", cls:""},
+      {n:reportingUnits+" / "+totalUnits, l:"Units reporting", cls:""},
+      {n:yesCount, l:"Confirmed sign-ups", cls:"good"},
+      {n:maybeCount, l:"Tentative sign-ups", cls:"warn"},
+      {n:locCount, l:"Schools covered", cls:""},
+      {n:ZERO_UNITS.length, l:"Units with no volunteer yet", cls:"crit"}
+    ];
+    document.getElementById("stats").innerHTML = tiles.map(function(t){
+      return '<div class="stat '+t.cls+'"><div class="n mono">'+esc(t.n)+'</div><div class="l">'+esc(t.l)+'</div></div>';
+    }).join("");
+  }
+
+  function renderAlert(){
+    var html = '<div class="alert"><div class="flag">&#9888;</div><div style="flex:1">' +
+      '<h3>'+ZERO_UNITS.length+' units haven’t reported a JSN Night volunteer yet</h3>' +
+      '<p>No rows for these units appear in the Volunteer Sign-Ups tab. Each has an on-file unit contact from the Units &amp; Access tab — worth a direct check before the 15th.</p>' +
+      '<div class="alert-units">' +
+      ZERO_UNITS.map(function(u){
+        var who = u.contactName ? esc(u.contactName) : '<span class="none">no contact on file</span>';
+        return '<div class="alert-unit"><b>'+esc(u.unit)+'</b><span class="contact-line">'+who+'</span></div>';
+      }).join("") +
+      '</div></div></div>';
+    document.getElementById("alertBanner").innerHTML = html;
+  }
+
+  /* ---------- filter state ---------- */
+  var state = { q:"", status:"all" };
+
+  function rowMatches(r){
+    if(state.status==="yes" && r.status!=="yes") return false;
+    if(state.status==="maybe" && r.status!=="maybe") return false;
+    if(state.status==="flagged" && !r.note) return false;
+    if(state.q){
+      var hay = (r.unit+" "+r.loc+" "+r.name).toLowerCase();
+      if(hay.indexOf(state.q) === -1) return false;
+    }
+    return true;
+  }
+  function zeroUnitMatches(u){
+    if(state.status==="yes" || state.status==="maybe") return false;
+    if(state.status==="flagged" && !u.note) return false;
+    if(state.q){
+      var hay = (u.unit+" "+(u.contactName||"")).toLowerCase();
+      if(hay.indexOf(state.q) === -1) return false;
+    }
+    return true;
+  }
+
+  function volunteerHtml(r){
+    return '<div class="volunteer">' +
+      '<div class="v-top">' +
+        '<span class="v-name">'+esc(r.name)+'</span>' +
+        '<span class="pill '+r.status+'">'+(r.status==="yes"?"Confirmed":"Tentative")+'</span>' +
+        '<span class="unit-tag">'+esc(r.unit)+'</span>' +
+        (r.note ? '<span class="flag-note" title="Has a sourcing note">&#9873;</span>' : "") +
+      '</div>' +
+      (r.note ? '<div class="v-note">'+esc(r.note)+'</div>' : "") +
+    '</div>';
+  }
+
+  function renderNight(){
+    var tabsHtml = "", panelsHtml = "";
+    DATES.forEach(function(d, i){
+      var dayRows = ROWS.filter(function(r){ return r.date===d.key; });
+      var y = dayRows.filter(function(r){return r.status==="yes";}).length;
+      var m = dayRows.filter(function(r){return r.status==="maybe";}).length;
+      tabsHtml += '<button class="nighttab" data-date="'+d.key+'" aria-selected="'+(i===0?"true":"false")+'">' +
+        '<span class="d">'+d.label+'</span><span class="s">'+d.short+' &middot; '+y+' confirmed, '+m+' tentative</span></button>';
+
+      var byLoc = {};
+      dayRows.forEach(function(r){
+        var key = r.loc || "— (troop-wide, no site named)";
+        (byLoc[key] = byLoc[key] || []).push(r);
+      });
+      var locs = Object.keys(byLoc).sort();
+
+      var stationsHtml = locs.map(function(loc){
+        var rows = byLoc[loc].filter(rowMatches);
+        if(rows.length===0) return "";
+        var yc = byLoc[loc].filter(function(r){return r.status==="yes";}).length;
+        var mc = byLoc[loc].filter(function(r){return r.status==="maybe";}).length;
+        var summary = [yc?yc+" confirmed":null, mc?mc+" tentative":null].filter(Boolean).join(", ");
+        return '<div class="station"><div class="station-head"><h4>'+esc(loc)+'</h4>' +
+          '<span class="station-count">'+summary+'</span></div>' +
+          rows.map(volunteerHtml).join("") + '</div>';
+      }).join("");
+
+      panelsHtml += '<div class="nightpanel" data-date="'+d.key+'">' +
+        '<div class="stations">'+(stationsHtml || '<p class="empty-note">No entries match the current filter for this night.</p>')+'</div></div>';
+    });
+    document.getElementById("nightTabs").innerHTML = tabsHtml;
+    document.getElementById("nightPanels").innerHTML = panelsHtml;
+
+    document.querySelectorAll(".nighttab").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        document.querySelectorAll(".nighttab").forEach(function(b){b.setAttribute("aria-selected", b===btn);});
+        document.querySelectorAll(".nightpanel").forEach(function(p){p.classList.toggle("active", p.dataset.date===btn.dataset.date);});
+      });
+    });
+    var first = document.querySelector(".nightpanel");
+    if(first) first.classList.add("active");
+  }
+
+  function unitCardHtml(unit, kind){
+    var rows = ROWS.filter(function(r){ return r.unit===unit; }).filter(rowMatches);
+    var allRows = ROWS.filter(function(r){ return r.unit===unit; });
+    if(allRows.length && rows.length===0) return "";
+    var y = allRows.filter(function(r){return r.status==="yes";}).length;
+    var m = allRows.filter(function(r){return r.status==="maybe";}).length;
+    var meta = UNIT_META[unit] || {};
+    return '<div class="unitcard"><div class="unit-head"><div><h4>'+esc(unit)+'</h4>' +
+      (meta.lastConfirmed ? '<div class="last-conf">last confirmed '+esc(meta.lastConfirmed)+'</div>' : "") + '</div>' +
+      '<div class="unit-counts">' +
+        (y? '<span class="pill yes">'+y+' confirmed</span>':'') +
+        (m? '<span class="pill maybe">'+m+' tentative</span>':'') +
+      '</div></div>' +
+      '<div class="unit-rows">' +
+      rows.map(function(r){
+        return '<div class="unit-row"><div><b>'+esc(r.name)+'</b> <span class="pill '+r.status+'" style="margin-left:4px">'+(r.status==="yes"?"Confirmed":"Tentative")+'</span>' +
+          (r.note ? ' <span class="flag-note" title="'+esc(r.note)+'">&#9873;</span>' : "") + '</div>' +
+          '<div class="loc-date">'+esc(r.loc||"no site named")+' &middot; '+esc(r.date)+'</div></div>';
+      }).join("") +
+      '</div>' +
+      (meta.note ? '<div class="footnote">'+esc(meta.note)+'</div>' : "") +
+    '</div>';
+  }
+
+  function zeroCardHtml(u){
+    if(!zeroUnitMatches(u)) return "";
+    return '<div class="unitcard zero"><div class="unit-head"><div><h4>'+esc(u.unit)+'</h4>' +
+      '<div class="last-conf">last confirmed '+esc(u.lastConfirmed)+'</div></div></div>' +
+      '<div class="zero-state">No JSN Night volunteer reported</div>' +
+      '<div class="onfile">On-file contact: '+(u.contactName?esc(u.contactName):'<span class="none">none on file</span>')+'</div>' +
+      (u.note ? '<div class="footnote">'+esc(u.note)+'</div>' : "") +
+    '</div>';
+  }
+
+  function renderUnits(){
+    var packUnits = Object.keys(UNIT_META).filter(function(u){return u.charAt(0)==="P";})
+      .concat(ZERO_UNITS.filter(function(u){return u.kind==="pack";}).map(function(u){return u.unit;}))
+      .sort(function(a,b){return unitNum(a)-unitNum(b);});
+    var troopUnits = Object.keys(UNIT_META).filter(function(u){return u.charAt(0)==="T";})
+      .concat(ZERO_UNITS.filter(function(u){return u.kind==="troop";}).map(function(u){return u.unit;}))
+      .sort(function(a,b){return unitNum(a)-unitNum(b);});
+
+    var zeroMap = {}; ZERO_UNITS.forEach(function(u){ zeroMap[u.unit]=u; });
+
+    document.getElementById("packGrid").innerHTML = packUnits.map(function(u){
+      return zeroMap[u] ? zeroCardHtml(zeroMap[u]) : unitCardHtml(u,"pack");
+    }).join("") || '<p class="empty-note">No packs match the current filter.</p>';
+
+    document.getElementById("troopGrid").innerHTML = troopUnits.map(function(u){
+      return zeroMap[u] ? zeroCardHtml(zeroMap[u]) : unitCardHtml(u,"troop");
+    }).join("") || '<p class="empty-note">No troops match the current filter.</p>';
+  }
+
+  function renderAll(){ renderNight(); renderUnits(); }
+
+  /* ---------- controls wiring ---------- */
+  document.getElementById("searchBox").addEventListener("input", function(e){
+    state.q = e.target.value.trim().toLowerCase();
+    renderAll();
+  });
+  document.querySelectorAll("#statusChips .chip").forEach(function(chip){
+    chip.addEventListener("click", function(){
+      document.querySelectorAll("#statusChips .chip").forEach(function(c){c.setAttribute("aria-pressed","false");});
+      chip.setAttribute("aria-pressed","true");
+      state.status = chip.dataset.status;
+      renderAll();
+    });
+  });
+  document.querySelectorAll(".viewtab").forEach(function(tab){
+    tab.addEventListener("click", function(){
+      document.querySelectorAll(".viewtab").forEach(function(t){t.setAttribute("aria-selected", t===tab);});
+      document.getElementById("view-night").classList.toggle("active", tab.dataset.view==="night");
+      document.getElementById("view-unit").classList.toggle("active", tab.dataset.view==="unit");
+    });
+  });
+
+  renderStats();
+  renderAlert();
+  renderAll();
+})();
+</script>
