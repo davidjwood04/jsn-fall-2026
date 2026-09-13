@@ -1,3 +1,4 @@
+<meta charset="UTF-8">
 <title>JSN Night Coverage</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -254,6 +255,64 @@
   .chip.status-warn[aria-pressed="true"]{background:var(--warn);border-color:var(--warn);}
   .chip.status-crit[aria-pressed="true"]{background:var(--crit);border-color:var(--crit);}
 
+  /* ============ RALLY CTA ============ */
+  .rally-cta{
+    margin-top:18px;
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    flex-wrap:wrap;
+    justify-content:space-between;
+    background:linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
+    border-radius:var(--radius);
+    padding:18px 22px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    animation:rally-pop .5s ease-out;
+  }
+  .rally-cta::before{
+    content:"";
+    position:absolute;inset:0;
+    background-image: repeating-linear-gradient(45deg, rgba(255,255,255,.07) 0 10px, transparent 10px 20px);
+    pointer-events:none;
+  }
+  .rally-text{position:relative;color:#fff;flex:1 1 260px;}
+  .rally-text .kicker{
+    font-family:var(--font-mono);font-size:11.5px;letter-spacing:.1em;
+    text-transform:uppercase;opacity:.9;display:flex;align-items:center;gap:6px;
+  }
+  .rally-text .kicker .pulse-dot{
+    display:inline-block;width:7px;height:7px;border-radius:50%;
+    background:#fff;animation:rally-blink 1.4s ease-in-out infinite;
+  }
+  .rally-text h3{
+    font-family:var(--font-display);font-weight:700;color:#fff;
+    font-size:clamp(17px,2.6vw,21px);margin-top:4px;line-height:1.25;
+  }
+  .rally-text p{margin:4px 0 0;color:rgba(255,255,255,.92);font-size:13.5px;}
+  .rally-btn{
+    position:relative;
+    flex:none;
+    display:inline-flex;align-items:center;gap:9px;
+    background:#fff;color:var(--primary-strong);
+    font-weight:700;font-size:15px;
+    padding:13px 22px;border-radius:999px;
+    text-decoration:none;white-space:nowrap;
+    box-shadow:0 2px 0 rgba(0,0,0,.15);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .rally-btn:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 5px 12px rgba(0,0,0,.22);}
+  .rally-btn:active{transform:translateY(0) scale(.98);}
+  .rally-btn .arrow{transition:transform .15s ease;}
+  .rally-btn:hover .arrow{transform:translateX(4px);}
+  @keyframes rally-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes rally-pop{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+  @media (prefers-reduced-motion: reduce){
+    .rally-cta{animation:none;}
+    .pulse-dot{animation:none;}
+  }
+
   /* ============ VIEW TABS ============ */
   .viewtabs{
     margin-top:22px;
@@ -401,6 +460,15 @@
       <button class="chip status-crit" data-status="flagged" aria-pressed="false">Has a note</button>
     </div>
   </div>
+
+  <a class="rally-cta" href="https://evite.me/wR5tExtUqD" target="_blank" rel="noopener" aria-label="RSVP for the Scout Rally on September 19th at Champion Park, 9 to 11:30am">
+    <div class="rally-text">
+      <div class="kicker"><span class="pulse-dot"></span>Don't forget</div>
+      <h3>🎉 Scout Rally — Sat, Sept 19 @ Champion Park, 9–11:30am</h3>
+      <p>One more chance to get face time with families before school starts back up — RSVP takes 10 seconds.</p>
+    </div>
+    <span class="rally-btn">Register now <span class="arrow">&rarr;</span></span>
+  </a>
 
   <div class="viewtabs" role="tablist">
     <button class="viewtab" role="tab" data-view="night" aria-selected="true">By night</button>
