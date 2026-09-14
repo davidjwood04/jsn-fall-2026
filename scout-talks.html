@@ -1,0 +1,285 @@
+<meta charset="UTF-8">
+<title>Scout Talks Schedule</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #EEEFE2;
+    --bg-contour: #dfe1cd;
+    --surface: #FBFBF4;
+    --surface-2: #E6E7D6;
+    --ink: #202A20;
+    --ink-2: #4A5647;
+    --ink-3: #7B8672;
+    --border: #D2D5BE;
+    --primary: #2E5339;
+    --primary-strong: #1D3A26;
+    --primary-tint: #E1E9DF;
+    --accent: #B85A22;
+    --accent-tint: #F3E1D2;
+    --good: #3E7D45;
+    --good-tint: #DEEBDD;
+    --warn: #A6740C;
+    --warn-tint: #F3E6C4;
+    --crit: #A83B2E;
+    --crit-tint: #F4DDD8;
+    --focus: #3E6BB0;
+    --shadow: 0 1px 2px rgba(32,42,32,.06), 0 4px 14px rgba(32,42,32,.05);
+    --radius: 12px;
+    --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+    --font-body: "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg: #12160E; --bg-contour: #191f12; --surface: #1A2016; --surface-2: #222A1C;
+      --ink: #EBEEE2; --ink-2: #B7C0AC; --ink-3: #7E8973; --border: #333D2A;
+      --primary: #7BB388; --primary-strong: #9BCBA5; --primary-tint: #202E22;
+      --accent: #E3A876; --accent-tint: #33261B;
+      --good: #6FBB77; --good-tint: #1D2E1E;
+      --warn: #D9AE4C; --warn-tint: #322A15;
+      --crit: #E08172; --crit-tint: #33201C;
+      --focus: #8FB6E8;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg: #12160E; --bg-contour: #191f12; --surface: #1A2016; --surface-2: #222A1C;
+    --ink: #EBEEE2; --ink-2: #B7C0AC; --ink-3: #7E8973; --border: #333D2A;
+    --primary: #7BB388; --primary-strong: #9BCBA5; --primary-tint: #202E22;
+    --accent: #E3A876; --accent-tint: #33261B;
+    --good: #6FBB77; --good-tint: #1D2E1E;
+    --warn: #D9AE4C; --warn-tint: #322A15;
+    --crit: #E08172; --crit-tint: #33201C;
+    --focus: #8FB6E8;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    font-size:15.5px;
+    line-height:1.5;
+    padding-inline:20px;
+  }
+  @media (min-width:720px){ body{ padding-inline:32px; } }
+  .wrap{max-width:1080px;margin:0 auto;}
+  h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0;}
+  a{color:inherit;}
+  ::selection{background:var(--primary-tint);}
+  :focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:4px;}
+  .mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums;}
+
+  .masthead{
+    position:relative;
+    padding:28px 0 22px;
+    border-bottom:1px solid var(--border);
+    background-image: repeating-radial-gradient(circle at 15% 20%, var(--bg-contour) 0 1px, transparent 1px 34px);
+  }
+  .backlink{
+    display:inline-flex;align-items:center;gap:5px;
+    font-size:13px;color:var(--ink-2);text-decoration:none;
+    margin-bottom:12px;
+  }
+  .backlink:hover{color:var(--primary);}
+  .eyebrow{
+    font-family:var(--font-mono);font-size:12px;letter-spacing:.09em;
+    text-transform:uppercase;color:var(--primary);font-weight:500;
+  }
+  .masthead h1{
+    font-size:clamp(26px,4.4vw,38px);font-weight:600;color:var(--ink);
+    margin-top:6px;max-width:34ch;
+  }
+  .masthead .meta{
+    margin-top:10px;color:var(--ink-2);font-size:14.5px;
+    display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;
+  }
+
+  .stats{
+    margin-top:22px;display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:10px;
+  }
+  .stat{
+    background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--radius);padding:13px 14px;box-shadow:var(--shadow);
+  }
+  .stat .n{font-family:var(--font-display);font-weight:600;font-size:26px;font-variant-numeric:tabular-nums;}
+  .stat .l{font-size:12px;color:var(--ink-2);margin-top:2px;letter-spacing:.02em;}
+  .stat.good .n{color:var(--good);}
+  .stat.warn .n{color:var(--warn);}
+
+  .day-section{margin-top:30px;}
+  .day-head{
+    display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
+    margin-bottom:12px;
+  }
+  .day-head h2{font-size:19px;font-weight:700;color:var(--ink);}
+  .day-head .day-sub{
+    font-family:var(--font-mono);font-size:12.5px;color:var(--ink-3);
+  }
+
+  .drop-table{
+    width:100%;border-collapse:collapse;
+    background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);
+  }
+  .drop-table th{
+    text-align:left;font-family:var(--font-body);font-size:11.5px;
+    text-transform:uppercase;letter-spacing:.06em;font-weight:700;
+    color:var(--ink-2);background:var(--surface-2);
+    padding:9px 14px;border-bottom:1px solid var(--border);
+  }
+  .drop-table td{
+    padding:11px 14px;border-bottom:1px solid var(--border);
+    font-size:14px;vertical-align:middle;
+  }
+  .drop-table tr:last-child td{border-bottom:0;}
+  .drop-table .school{font-weight:600;}
+  .pack-tag{
+    font-family:var(--font-mono);font-size:11.5px;color:var(--ink-2);
+    background:var(--surface-2);border-radius:5px;padding:2px 7px;white-space:nowrap;
+  }
+  .status-pill{
+    font-size:11px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;
+    border-radius:999px;padding:3px 10px;white-space:nowrap;display:inline-block;
+  }
+  .status-pill.approved{background:var(--good-tint);color:var(--good);}
+  .status-pill.progress{background:var(--warn-tint);color:var(--warn);}
+
+  .table-scroll{overflow-x:auto;}
+
+  footer{
+    margin:40px 0 32px;padding-top:18px;border-top:1px solid var(--border);
+    font-size:12.5px;color:var(--ink-3);line-height:1.7;
+  }
+  footer a{color:var(--focus);}
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <a class="backlink" href="jsn-coverage.html">&larr; Back to JSN Night Coverage</a>
+    <div class="eyebrow">Capitol Area Council &middot; North Shore District</div>
+    <h1>Scout Talks Schedule — Fall 2026</h1>
+    <div class="meta">
+      <span>Three school days &middot; <span class="mono">Sep 14–16, 2026</span></span>
+      <span>3-minute talk per grade, delivered in-school</span>
+      <span>Snapshot as of <span class="mono">Sep 13, 2026</span></span>
+    </div>
+  </header>
+
+  <section class="stats" id="stats"></section>
+
+  <div id="days"></div>
+
+  <footer>
+    Tracks who is delivering the in-school Scout Talks — brief, 3-minute talks given to each grade — ahead of
+    Join Scouting Night. This is a separate effort from the JSN Night table volunteers tracked on the
+    <a href="jsn-coverage.html">main coverage page</a>.
+    "Approved" and "In progress" reflect sign-off status as recorded by the district.
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var TALKS = [
+    {date:"2026-09-14", school:"Bagdad", pack:"P-2008", volunteer:"Summer Jones", status:"approved"},
+    {date:"2026-09-14", school:"Block House Creek", pack:"P-171", volunteer:"Justin Brundin", status:"approved"},
+    {date:"2026-09-14", school:"Cox", pack:"P-1277", volunteer:"Kathy Rogers", status:"approved"},
+    {date:"2026-09-14", school:"Cypress", pack:"P-172", volunteer:"Keri Burns", status:"approved"},
+    {date:"2026-09-14", school:"River Ridge", pack:"P-201", volunteer:"Tim Pacl", status:"approved"},
+    {date:"2026-09-14", school:"Tarvin", pack:"P-233", volunteer:"Aaron Garrett", status:"approved"},
+    {date:"2026-09-14", school:"Whitestone", pack:"P-170", volunteer:"Jim Whiteaker", status:"approved"},
+
+    {date:"2026-09-15", school:"Akin", pack:"P-233 / T-91", volunteer:"Jim Whiteaker", status:"approved"},
+    {date:"2026-09-15", school:"Camacho", pack:"P-160", volunteer:"Aaron Garrett", status:"approved"},
+    {date:"2026-09-15", school:"Giddens", pack:"P-171", volunteer:"Dave Wood", status:"approved"},
+    {date:"2026-09-15", school:"Knowles", pack:"P-2008", volunteer:"Jeff Duncan & Tim Pacl", status:"approved"},
+    {date:"2026-09-15", school:"Larkspur", pack:"P-160", volunteer:"Matthew Geske", status:"approved"},
+    {date:"2026-09-15", school:"Laura Welch Bush", pack:"P-201", volunteer:"Summer Jones", status:"progress"},
+    {date:"2026-09-15", school:"Mason", pack:"P-170", volunteer:"Erich Hauptli", status:"approved"},
+    {date:"2026-09-15", school:"Reagan", pack:"P-150", volunteer:"Daniel Mathura", status:"approved"},
+    {date:"2026-09-15", school:"River Place", pack:"P-201", volunteer:"Justin Brundin", status:"approved"},
+
+    {date:"2026-09-16", school:"Grandview Hills", pack:"P-201", volunteer:"Daniel Mathura", status:"approved"},
+    {date:"2026-09-16", school:"Hisle (new unit)", pack:"P-161", volunteer:"Summer Jones", status:"approved"},
+    {date:"2026-09-16", school:"Naumann", pack:"P-172", volunteer:"Charles Frank", status:"approved"},
+    {date:"2026-09-16", school:"Parkside", pack:"P-233", volunteer:"Nicholas Souza", status:"approved"},
+    {date:"2026-09-16", school:"Plain", pack:"P-160", volunteer:"CJ Mendes", status:"approved"},
+    {date:"2026-09-16", school:"Pleasant Hill", pack:"P-171", volunteer:"Aaron Garrett", status:"approved"},
+    {date:"2026-09-16", school:"Reed", pack:"P-1277", volunteer:"Kathy Rogers", status:"approved"},
+    {date:"2026-09-16", school:"Steiner Ranch", pack:"P-201", volunteer:"Justin Brundin", status:"approved"},
+    {date:"2026-09-16", school:"Westside", pack:"P-2008", volunteer:"Lauren Duncan", status:"approved"},
+    {date:"2026-09-16", school:"Winkley", pack:"P-170", volunteer:"Tim Pacl", status:"progress"}
+  ];
+
+  var DAYS = [
+    {key:"2026-09-14", label:"Monday, Sept 14"},
+    {key:"2026-09-15", label:"Tuesday, Sept 15"},
+    {key:"2026-09-16", label:"Wednesday, Sept 16"}
+  ];
+
+  function esc(s){
+    return String(s==null?"":s).replace(/[&<>"]/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];
+    });
+  }
+
+  function renderStats(){
+    var approved = TALKS.filter(function(d){return d.status==="approved";}).length;
+    var progress = TALKS.filter(function(d){return d.status==="progress";}).length;
+    var schools = {}; TALKS.forEach(function(d){ schools[d.school]=1; });
+    var packs = {}; TALKS.forEach(function(d){ d.pack.split("/").forEach(function(p){ packs[p.trim()]=1; }); });
+
+    var tiles = [
+      {n:TALKS.length, l:"Total talks", cls:""},
+      {n:approved, l:"Approved", cls:"good"},
+      {n:progress, l:"In progress", cls:"warn"},
+      {n:Object.keys(schools).length, l:"Schools covered", cls:""},
+      {n:Object.keys(packs).length, l:"Packs/troops involved", cls:""}
+    ];
+    document.getElementById("stats").innerHTML = tiles.map(function(t){
+      return '<div class="stat '+t.cls+'"><div class="n mono">'+esc(t.n)+'</div><div class="l">'+esc(t.l)+'</div></div>';
+    }).join("");
+  }
+
+  function statusHtml(s){
+    return s==="approved"
+      ? '<span class="status-pill approved">Approved</span>'
+      : '<span class="status-pill progress">In progress</span>';
+  }
+
+  function renderDays(){
+    var html = DAYS.map(function(day){
+      var rows = TALKS.filter(function(d){ return d.date===day.key; });
+      var approved = rows.filter(function(d){return d.status==="approved";}).length;
+      var progress = rows.length - approved;
+      var sub = approved + " approved" + (progress ? ", " + progress + " in progress" : "");
+
+      var body = rows.map(function(r){
+        return '<tr><td class="school">'+esc(r.school)+'</td>' +
+          '<td><span class="pack-tag">'+esc(r.pack)+'</span></td>' +
+          '<td>'+esc(r.volunteer)+'</td>' +
+          '<td>'+statusHtml(r.status)+'</td></tr>';
+      }).join("");
+
+      return '<section class="day-section">' +
+        '<div class="day-head"><h2>'+esc(day.label)+'</h2><span class="day-sub">'+esc(sub)+'</span></div>' +
+        '<div class="table-scroll"><table class="drop-table">' +
+        '<thead><tr><th>School</th><th>Pack</th><th>Volunteer</th><th>Status</th></tr></thead>' +
+        '<tbody>'+body+'</tbody></table></div>' +
+        '</section>';
+    }).join("");
+    document.getElementById("days").innerHTML = html;
+  }
+
+  renderStats();
+  renderDays();
+})();
+</script>
