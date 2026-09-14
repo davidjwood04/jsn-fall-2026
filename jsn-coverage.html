@@ -367,6 +367,14 @@
   .volunteer:first-child{padding-top:0;}
   .v-top{display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
   .v-name{font-weight:600;font-size:14px;}
+  .tbd-flag{
+    background:#FFE600;
+    color:#B00020;
+    font-weight:800;
+    padding:1px 7px;
+    border-radius:4px;
+    letter-spacing:.02em;
+  }
   .unit-tag{
     font-family:var(--font-mono);font-size:11.5px;color:var(--ink-2);
     background:var(--surface-2);border-radius:5px;padding:1px 6px;
@@ -431,7 +439,109 @@
     line-height:1.7;
   }
   footer a{color:var(--focus);}
+
+  /* ============ RESOURCES DRAWER ============ */
+  .resources-tab{
+    position:fixed;
+    top:50%;
+    right:0;
+    transform:translateY(-50%);
+    z-index:40;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    background:var(--primary);
+    color:var(--surface);
+    border:1px solid var(--primary);
+    border-right:none;
+    border-radius:10px 0 0 10px;
+    padding:14px 9px;
+    cursor:pointer;
+    box-shadow:var(--shadow);
+    writing-mode:vertical-rl;
+    font-family:var(--font-body);
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:.02em;
+  }
+  .resources-tab:hover{background:var(--primary-strong);}
+  .resources-tab svg{flex:none;transform:rotate(90deg);}
+
+  .resources-overlay{
+    position:fixed;inset:0;
+    background:rgba(10,14,8,.45);
+    z-index:49;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .2s ease;
+  }
+  .resources-overlay.open{opacity:1;pointer-events:auto;}
+
+  .resources-drawer{
+    position:fixed;
+    top:0;right:0;
+    height:100%;
+    width:min(340px, 88vw);
+    background:var(--surface);
+    border-left:1px solid var(--border);
+    box-shadow:-6px 0 24px rgba(0,0,0,.15);
+    z-index:50;
+    display:flex;
+    flex-direction:column;
+    transform:translateX(100%);
+    transition:transform .25s ease;
+  }
+  .resources-drawer.open{transform:translateX(0);}
+  .resources-head{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 18px 14px;
+    border-bottom:1px solid var(--border);
+  }
+  .resources-head h3{font-size:17px;font-weight:700;color:var(--ink);}
+  .resources-close{
+    background:none;border:0;cursor:pointer;
+    color:var(--ink-2);padding:4px;line-height:1;border-radius:6px;
+  }
+  .resources-close:hover{background:var(--surface-2);color:var(--ink);}
+  .resources-list{padding:10px 12px;overflow-y:auto;flex:1;}
+  .resource-link{
+    display:flex;align-items:center;gap:11px;
+    padding:12px 10px;
+    border-radius:10px;
+    text-decoration:none;
+    color:var(--ink);
+    transition:background .12s ease;
+  }
+  .resource-link:hover{background:var(--surface-2);}
+  .resource-link .r-icon{
+    flex:none;
+    width:34px;height:34px;
+    border-radius:8px;
+    background:var(--primary-tint);
+    color:var(--primary);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .resource-link .r-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
+  .resource-link .r-title{font-weight:600;font-size:14px;}
+  .resource-link .r-sub{font-size:12px;color:var(--ink-2);}
+  .resource-link .r-go{flex:none;color:var(--ink-3);}
+  .resources-empty{padding:14px 10px;color:var(--ink-3);font-size:13.5px;font-style:italic;}
 </style>
+
+<button class="resources-tab" id="resourcesTab" aria-expanded="false" aria-controls="resourcesDrawer">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4v16a1 1 0 0 0 1 1h11"/><path d="M8 4h11a1 1 0 0 1 1 1v11"/></svg>
+  Resources
+</button>
+<div class="resources-overlay" id="resourcesOverlay"></div>
+<aside class="resources-drawer" id="resourcesDrawer" aria-hidden="true" aria-label="Helpful resources">
+  <div class="resources-head">
+    <h3>Resources</h3>
+    <button class="resources-close" id="resourcesClose" aria-label="Close resources panel">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="resources-list" id="resourcesList"></div>
+</aside>
 
 <div class="wrap">
   <header class="masthead">
@@ -444,7 +554,7 @@
     </div>
   </header>
 
-  <div id="alertBanner"></div>
+  <!-- <div id="alertBanner"></div> -->
 
   <section class="stats" id="stats"></section>
 
@@ -509,15 +619,15 @@
   "use strict";
 
   var ROWS = [
-    {unit:"P-150",kind:"pack",date:"2026-09-15",loc:"Rutledge",name:"TBD",status:"yes",note:""},
-    {unit:"P-150",kind:"pack",date:"2026-09-16",loc:"Reagan",name:"TBD",status:"yes",note:""},
+   
+
 
     {unit:"P-160",kind:"pack",date:"2026-09-15",loc:"North",name:"CJ Mendes",status:"yes",note:""},
     {unit:"P-160",kind:"pack",date:"2026-09-15",loc:"North",name:"Dawnielle Allen",status:"yes",note:""},
     {unit:"P-160",kind:"pack",date:"2026-09-15",loc:"North",name:"Matthew Geske",status:"yes",note:""},
     {unit:"P-160",kind:"pack",date:"2026-09-16",loc:"Camacho",name:"Kenneth Kelly",status:"yes",note:""},
     {unit:"P-160",kind:"pack",date:"2026-09-16",loc:"Camacho",name:"Bobby Godwin",status:"yes",note:""},
-    {unit:"P-160",kind:"pack",date:"2026-09-16",loc:"Camacho",name:"Remyngton Allen",status:"maybe",note:""/* was: "Unclear if he still attends now that parent Dawnielle moved to North/Larkspur — confirm before JSN." */},
+    //{unit:"P-160",kind:"pack",date:"2026-09-16",loc:"Camacho",name:"Remyngton Allen",status:"yes",note:""/* was: "Unclear if he still attends now that parent Dawnielle moved to North/Larkspur — confirm before JSN." */},
     {unit:"P-160",kind:"pack",date:"2026-09-16",loc:"Larkspur",name:"Dawnielle Allen",status:"yes",note:""},
     {unit:"P-160",kind:"pack",date:"2026-09-16",loc:"Larkspur",name:"Doug Allen",status:"yes",note:""},
     {unit:"P-160",kind:"pack",date:"2026-09-17",loc:"Plain",name:"Kenneth Kelly",status:"yes",note:""},
@@ -555,13 +665,8 @@
     {unit:"P-2008",kind:"pack",date:"2026-09-17",loc:"Westside",name:"Paul",status:"yes",note:""/* was: "Same name, date, and location as a Westside entry also listed under T-258 / T-358 — worth confirming this isn't a duplicate rather than two different people." */},
     {unit:"P-2008",kind:"pack",date:"2026-09-17",loc:"Westside",name:"Mahilisai",status:"yes",note:""/* was: "Same name, date, and location as a Westside entry also listed under T-258 / T-358 — worth confirming this isn't a duplicate rather than two different people." */},
     {unit:"P-2008",kind:"pack",date:"2026-09-17",loc:"Westside",name:"Diya",status:"yes",note:""/* was: "Same name, date, and location as a Westside entry also listed under T-258 / T-358 — worth confirming this isn't a duplicate rather than two different people." */},
-    {unit:"P-2008",kind:"pack",date:"2026-09-16",loc:"Knowles",name:"TBD",status:"yes",note:""},
 
-    {unit:"P-201",kind:"pack",date:"2026-09-16",loc:"Bush",name:"TBD",status:"yes",note:""},
-    {unit:"P-201",kind:"pack",date:"2026-09-15",loc:"River Ridge",name:"TBD",status:"yes",note:""},
-    {unit:"P-201",kind:"pack",date:"2026-09-16",loc:"River Place",name:"TBD",status:"yes",note:""},
-    {unit:"P-201",kind:"pack",date:"2026-09-17",loc:"Grand View",name:"TBD",status:"yes",note:""},
-    {unit:"P-201",kind:"pack",date:"2026-09-17",loc:"Steiner",name:"TBD",status:"yes",note:""},
+    {unit:"P-201",kind:"pack",date:"2026-09-17",loc:"Steiner",name:"Matthew Haneman",status:"yes",note:""},
     
     {unit:"P-233",kind:"pack",date:"2026-09-15",loc:"Tarvin",name:"Nethra Tantrigoda",status:"yes",note:""},
     {unit:"P-233",kind:"pack",date:"2026-09-16",loc:"Akin",name:"Wesley Flower",status:"yes",note:""},
@@ -579,16 +684,41 @@
     {unit:"T-171",kind:"troop",date:"2026-09-17",loc:"Pleasant Hill",name:"Matt Nelsen",status:"yes",note:""},
     {unit:"T-171",kind:"troop",date:"2026-09-17",loc:"Pleasant Hill",name:"Ben N.",status:"yes",note:""},
     {unit:"T-171",kind:"troop",date:"2026-09-17",loc:"Pleasant Hill",name:"Joey N.",status:"yes",note:""},
+    {unit:"T-171",kind:"troop",date:"2026-09-15",loc:"Block House Creek",name:"Lillian W.",status:"yes",note:""},
+    {unit:"T-171",kind:"troop",date:"2026-09-16",loc:"Giddens",name:"Lillian W.",status:"yes",note:""},
 
-    {unit:"T-202",kind:"troop",date:"2026-09-16",loc:"Hisle",name:"Aaron Garrett",status:"maybe",note:""/* was: "Plausible fit per his 8/8 form, but not formally assigned to Hisle yet." */},
-
-    {unit:"T-258 / T-358",kind:"troop",date:"2026-09-15",loc:"Block House Creek",name:"Lillian W.",status:"yes",note:""},
-    {unit:"T-258 / T-358",kind:"troop",date:"2026-09-16",loc:"Giddens",name:"Lillian W.",status:"yes",note:""},
     {unit:"T-258 / T-358",kind:"troop",date:"2026-09-17",loc:"Naumann",name:"Mehria Smith",status:"yes",note:""},
     {unit:"T-258 / T-358",kind:"troop",date:"2026-09-17",loc:"Naumann",name:"Siddharth",status:"yes",note:""},
     {unit:"T-258 / T-358",kind:"troop",date:"2026-09-17",loc:"Westside",name:"Paul",status:"yes",note:""},
     {unit:"T-258 / T-358",kind:"troop",date:"2026-09-17",loc:"Westside",name:"Mahilisai",status:"yes",note:""},
-    {unit:"T-258 / T-358",kind:"troop",date:"2026-09-17",loc:"Westside",name:"Diya",status:"yes",note:""}
+    {unit:"T-258 / T-358",kind:"troop",date:"2026-09-17",loc:"Westside",name:"Diya",status:"yes",note:""},
+    {unit:"T-258 / T-358",kind:"troop",date:"2026-09-17",loc:"Westside",name:"Lucky",status:"yes",note:""},
+    {unit:"T-258 / T-358",kind:"troop",date:"2026-09-17",loc:"Westside",name:"Joan",status:"yes",note:""},
+    {unit:"T-258 / T-358",kind:"troop",date:"2026-09-17",loc:"Westside",name:"Shruthika",status:"yes",note:""},
+    {unit:"T-258 / T-358",kind:"troop",date:"2026-09-17",loc:"Westside",name:"Bianca",status:"yes",note:""},
+    {unit:"T-258 / T-358",kind:"troop",date:"2026-09-17",loc:"Westside",name:"James Orbock",status:"yes",note:""},
+    {unit:"T-258 / T-358",kind:"troop",date:"2026-09-17",loc:"Naumann",name:"Angie",status:"yes",note:""},
+    {unit:"T-258 / T-358",kind:"troop",date:"2026-09-17",loc:"Westside",name:"Nicolas",status:"yes",note:""},
+
+    {unit:"NSD",kind:"district",date:"2026-09-15",loc:"River Ridge",name:"Justin Brunden",status:"yes",note:""},
+    {unit:"NSD",kind:"district",date:"2026-09-15",loc:"River Ridge",name:"Dave Wood",status:"yes",note:""},
+    {unit:"NSD",kind:"district",date:"2026-09-15",loc:"Rutledge",name:"Summer Jones",status:"yes",note:""},
+    {unit:"NSD",kind:"district",date:"2026-09-15",loc:"Rutledge",name:"Mark Starkel",status:"yes",note:""},
+    {unit:"NSD",kind:"district",date:"2026-09-15",loc:"Tarvin",name:"Aaron Garrett",status:"yes",note:""},
+    {unit:"NSD",kind:"district",date:"2026-09-15",loc:"Deer Creek",name:"Daniel Mathura",status:"yes",note:""},
+    {unit:"NSD",kind:"district",date:"2026-09-16",loc:"Reagan",name:"Summer Jones",status:"yes",note:""},
+    {unit:"NSD",kind:"district",date:"2026-09-16",loc:"Reagan",name:"Mark Starkel",status:"yes",note:""},
+    {unit:"NSD",kind:"district",date:"2026-09-16",loc:"Hisle",name:"Aaron Garrett",status:"yes",note:""},
+    {unit:"NSD",kind:"district",date:"2026-09-16",loc:"River Place",name:"Justin Brunden",status:"yes",note:""},
+    {unit:"NSD",kind:"district",date:"2026-09-16",loc:"Bush",name:"Dave Wood",status:"yes",note:""},
+    {unit:"NSD",kind:"district",date:"2026-09-17",loc:"Steiner",name:"Justin Brunden",status:"yes",note:""},
+    {unit:"NSD",kind:"district",date:"2026-09-16",loc:"Knowles",name:"Daniel Mathura",status:"yes",note:""},
+    {unit:"NSD",kind:"district",date:"2026-09-16",loc:"Knowles",name:"Keri Burns",status:"maybe",note:""},
+    {unit:"NSD",kind:"district",date:"2026-09-17",loc:"Grand View",name:"Dave Wood",status:"yes",note:""},
+    {unit:"P-201",kind:"pack",date:"2026-09-16",loc:"Bush",name:"TBD",status:"yes",note:""},
+    {unit:"P-201",kind:"pack",date:"2026-09-16",loc:"River Place",name:"TBD",status:"yes",note:""},
+    {unit:"P-201",kind:"pack",date:"2026-09-17",loc:"Grand View",name:"TBD",status:"yes",note:""},
+
   ];
 
   // Units with zero JSN-night sign-ups recorded, from the "Units & Access" tab.
@@ -600,20 +730,20 @@
 
   // Footnotes / provenance from the "Units & Access" tab, for units that DID report volunteers.
   var UNIT_META = {
-    "P-150": {lastConfirmed:"2026-07-07", note:""/* was: "Only one contact on file for this pack." */},
-    "P-160": {lastConfirmed:"2026-08-13", note:""/* was: "CJ Mendes is marked WITHDRAWN in the source and excluded. Bobby Godwin has no email on file." */},
-    "P-170": {lastConfirmed:"2026-08-17", note:""/* was: "14 “Family” placeholder entries in the source carry no contact info at all — only Lacy Putnam has an email." */},
-    "P-171": {lastConfirmed:"2026-08-03", note:""/* was: "Brian Talbot's email is sourced only from a district distribution list and is unverified. Kyle Bickling is confirmed." */},
-    "P-172": {lastConfirmed:"2026-08-17", note:""/* was: "Additional unit contacts on file, not listed as JSN volunteers: Matt Meyers, Vanessa McGee, Timothy Salmon. Charles Frank has no contact on file." */},
-    "P-1277": {lastConfirmed:"2026-05-20 to 2026-08-09", note:""/* was: "Contacts confirmed on different dates: Cody Fuller (5/20), Nicholas Souza (5/20), Kathy Rogers (8/9)." */},
-    "P-1720": {lastConfirmed:"2026-08-09", note:""},
-    "P-2008": {lastConfirmed:"2026-08-10 to 2026-08-17", note:""/* was: "Additional unit contacts on file, not listed as JSN volunteers: Lauren Duncan, Jeff Duncan." */},
-    "P-233": {lastConfirmed:"2026-07-16 to 2026-08-08", note:""/* was: "Justin Pickens (Cubmaster) is on file as a contact but has no direct confirmation." */},
-    "T-91": {lastConfirmed:"2026-08-04 to 2026-08-08", note:""/* was: "Additional unit contacts on file, not listed as JSN volunteers: Jennifer Fortenberry, Jim Whiteaker." */},
-    "T-161": {lastConfirmed:"2026-08-09 to 2026-08-17", note:""/* was: "The troop email on file (Nicole Weiss) bounced once, per the source notes." */},
-    "T-171": {lastConfirmed:"2026-09-12", note:""/* was: "No contact exists in the source Volunteers tab for this troop — its unit contact was given directly by Dave, not pulled from the sheet." */},
-    "T-202": {lastConfirmed:"2026-08-08", note:""},
-    "T-258 / T-358": {lastConfirmed:"2026-05-18", note:""/* was: "Mehria Smith is the one combined point of contact for both troops; no separate contact exists for either alone." */}
+    "P-150": {lastConfirmed:"", note:""/* was: "Only one contact on file for this pack." */},
+    "P-160": {lastConfirmed:"", note:""/* was: "CJ Mendes is marked WITHDRAWN in the source and excluded. Bobby Godwin has no email on file." */},
+    "P-170": {lastConfirmed:"", note:""/* was: "14 “Family” placeholder entries in the source carry no contact info at all — only Lacy Putnam has an email." */},
+    "P-171": {lastConfirmed:"", note:""/* was: "Brian Talbot's email is sourced only from a district distribution list and is unverified. Kyle Bickling is confirmed." */},
+    "P-172": {lastConfirmed:"", note:""/* was: "Additional unit contacts on file, not listed as JSN volunteers: Matt Meyers, Vanessa McGee, Timothy Salmon. Charles Frank has no contact on file." */},
+    "P-1277": {lastConfirmed:"", note:""/* was: "Contacts confirmed on different dates: Cody Fuller (5/20), Nicholas Souza (5/20), Kathy Rogers (8/9)." */},
+    "P-1720": {lastConfirmed:"", note:""},
+    "P-2008": {lastConfirmed:"", note:""/* was: "Additional unit contacts on file, not listed as JSN volunteers: Lauren Duncan, Jeff Duncan." */},
+    "P-233": {lastConfirmed:"", note:""/* was: "Justin Pickens (Cubmaster) is on file as a contact but has no direct confirmation." */},
+    "T-91": {lastConfirmed:"", note:""/* was: "Additional unit contacts on file, not listed as JSN volunteers: Jennifer Fortenberry, Jim Whiteaker." */},
+    "T-161": {lastConfirmed:"", note:""/* was: "The troop email on file (Nicole Weiss) bounced once, per the source notes." */},
+    "T-171": {lastConfirmed:"", note:""/* was: "No contact exists in the source Volunteers tab for this troop — its unit contact was given directly by Dave, not pulled from the sheet." */},
+    "T-202": {lastConfirmed:"", note:""},
+    "T-258 / T-358": {lastConfirmed:"", note:""/* was: "Mehria Smith is the one combined point of contact for both troops; no separate contact exists for either alone." */}
   };
 
   var DATES = [
@@ -622,12 +752,26 @@
     {key:"2026-09-17", label:"Thursday", short:"Sep 17"}
   ];
 
+  var RESOURCES = [
+    {title:"Scout Rally Flyer", sub:"Make sure to invite all scouts!", url:"https://drive.google.com/file/d/1J0GaBtjzR9uGLI8ZUqZm1dVvJlfEca0I/view?usp=drive_link"},
+    {title:"LISD Doors", sub:"drive.google.com — shared folder", url:"https://drive.google.com/drive/folders/1IbQ7XA-zG3PDKsLXTMFfSXgI8SkFfVJ7?usp=sharing"},
+    {title:"Sign-in form", sub:"Use this to sign in scout parents", url:"https://forms.gle/QMFUJG3rPXVZX3Tw6"},
+    {title:"JSN presentation — Google Slides", sub:"Slide deck for JSN presentation", url:"https://docs.google.com/presentation/d/1mrVbE4NTB_ekV21z-AEJqM91LjQZR8jpQEVbOQguZa4/edit?usp=sharing"},
+    {title:"JSN presentation — Canva", sub:"Design template for JSN presentation", url:"https://canva.link/0ez5wmpmjn3bgo1"},
+    {title:"Volunteer guide", sub:"Comprehensive guide for JSN volunteers", url:"https://docs.google.com/document/d/1kv0z3_Lhbm86MV12QDhAjvuIK6NGFxQLnJkA-7eFCLQ/edit?usp=sharing"},
+    {title:"Training materials & flyer distribution instructions", sub:"Resources for training and flyer distribution", url:"https://drive.google.com/drive/u/1/folders/12gN9SK8ne9GLTZFOPh8GZJD5DIO6KflO"},
+
+  ];
+
   function esc(s){
     return String(s==null?"":s).replace(/[&<>"]/g, function(c){
       return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];
     });
   }
   function unitNum(u){ var m = u.match(/(\d+)/); return m ? parseInt(m[1],10) : 0; }
+  function nameHtml(n){
+    return String(n).trim().toUpperCase()==="TBD" ? '<span class="tbd-flag">TBD</span>' : esc(n);
+  }
 
   /* ---------- countdown ---------- */
   (function(){
@@ -701,7 +845,7 @@
   function volunteerHtml(r){
     return '<div class="volunteer">' +
       '<div class="v-top">' +
-        '<span class="v-name">'+esc(r.name)+'</span>' +
+        '<span class="v-name">'+nameHtml(r.name)+'</span>' +
         '<span class="pill '+r.status+'">'+(r.status==="yes"?"Confirmed":"Tentative")+'</span>' +
         '<span class="unit-tag">'+esc(r.unit)+'</span>' +
         (r.note ? '<span class="flag-note" title="Has a sourcing note">&#9873;</span>' : "") +
@@ -768,7 +912,7 @@
       '</div></div>' +
       '<div class="unit-rows">' +
       rows.map(function(r){
-        return '<div class="unit-row"><div><b>'+esc(r.name)+'</b> <span class="pill '+r.status+'" style="margin-left:4px">'+(r.status==="yes"?"Confirmed":"Tentative")+'</span>' +
+        return '<div class="unit-row"><div><b>'+nameHtml(r.name)+'</b> <span class="pill '+r.status+'" style="margin-left:4px">'+(r.status==="yes"?"Confirmed":"Tentative")+'</span>' +
           (r.note ? ' <span class="flag-note" title="'+esc(r.note)+'">&#9873;</span>' : "") + '</div>' +
           '<div class="loc-date">'+esc(r.loc||"no site named")+' &middot; '+esc(r.date)+'</div></div>';
       }).join("") +
@@ -808,6 +952,44 @@
 
   function renderAll(){ renderNight(); renderUnits(); }
 
+  /* ---------- resources drawer ---------- */
+  function renderResources(){
+    var html = RESOURCES.map(function(r){
+      return '<a class="resource-link" href="'+esc(r.url)+'" target="_blank" rel="noopener">' +
+        '<span class="r-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.07 0l2.83-2.83a5 5 0 0 0-7.07-7.07L11.5 4.5"/><path d="M14 11a5 5 0 0 0-7.07 0L4.1 13.83a5 5 0 0 0 7.07 7.07L12.5 19.5"/></svg></span>' +
+        '<span class="r-text"><span class="r-title">'+esc(r.title)+'</span><span class="r-sub">'+esc(r.sub||"")+'</span></span>' +
+        '<span class="r-go"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></span>' +
+      '</a>';
+    }).join("");
+    document.getElementById("resourcesList").innerHTML = html || '<div class="resources-empty">No resources added yet.</div>';
+  }
+
+  (function(){
+    var tab = document.getElementById("resourcesTab");
+    var drawer = document.getElementById("resourcesDrawer");
+    var overlay = document.getElementById("resourcesOverlay");
+    var closeBtn = document.getElementById("resourcesClose");
+
+    function openDrawer(){
+      drawer.classList.add("open");
+      overlay.classList.add("open");
+      tab.setAttribute("aria-expanded","true");
+      drawer.setAttribute("aria-hidden","false");
+    }
+    function closeDrawer(){
+      drawer.classList.remove("open");
+      overlay.classList.remove("open");
+      tab.setAttribute("aria-expanded","false");
+      drawer.setAttribute("aria-hidden","true");
+    }
+    tab.addEventListener("click", openDrawer);
+    closeBtn.addEventListener("click", closeDrawer);
+    overlay.addEventListener("click", closeDrawer);
+    document.addEventListener("keydown", function(e){
+      if(e.key === "Escape") closeDrawer();
+    });
+  })();
+
   /* ---------- controls wiring ---------- */
   document.getElementById("searchBox").addEventListener("input", function(e){
     state.q = e.target.value.trim().toLowerCase();
@@ -830,7 +1012,8 @@
   });
 
   renderStats();
-  renderAlert();
+  // renderAlert();
   renderAll();
+  renderResources();
 })();
 </script>
