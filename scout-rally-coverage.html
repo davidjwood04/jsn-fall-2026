@@ -1,0 +1,382 @@
+<meta charset="UTF-8">
+<title>Scout Rally Coverage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #EEEFE2;
+    --bg-contour: #dfe1cd;
+    --surface: #FBFBF4;
+    --surface-2: #E6E7D6;
+    --ink: #202A20;
+    --ink-2: #4A5647;
+    --ink-3: #7B8672;
+    --border: #D2D5BE;
+    --primary: #2E5339;
+    --primary-strong: #1D3A26;
+    --primary-tint: #E1E9DF;
+    --accent: #B85A22;
+    --accent-tint: #F3E1D2;
+    --good: #3E7D45;
+    --good-tint: #DEEBDD;
+    --warn: #A6740C;
+    --warn-tint: #F3E6C4;
+    --crit: #A83B2E;
+    --crit-tint: #F4DDD8;
+    --focus: #3E6BB0;
+    --shadow: 0 1px 2px rgba(32,42,32,.06), 0 4px 14px rgba(32,42,32,.05);
+    --radius: 12px;
+    --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+    --font-body: "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg: #12160E; --bg-contour: #191f12; --surface: #1A2016; --surface-2: #222A1C;
+      --ink: #EBEEE2; --ink-2: #B7C0AC; --ink-3: #7E8973; --border: #333D2A;
+      --primary: #7BB388; --primary-strong: #9BCBA5; --primary-tint: #202E22;
+      --accent: #E3A876; --accent-tint: #33261B;
+      --good: #6FBB77; --good-tint: #1D2E1E;
+      --warn: #D9AE4C; --warn-tint: #322A15;
+      --crit: #E08172; --crit-tint: #33201C;
+      --focus: #8FB6E8;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg: #12160E; --bg-contour: #191f12; --surface: #1A2016; --surface-2: #222A1C;
+    --ink: #EBEEE2; --ink-2: #B7C0AC; --ink-3: #7E8973; --border: #333D2A;
+    --primary: #7BB388; --primary-strong: #9BCBA5; --primary-tint: #202E22;
+    --accent: #E3A876; --accent-tint: #33261B;
+    --good: #6FBB77; --good-tint: #1D2E1E;
+    --warn: #D9AE4C; --warn-tint: #322A15;
+    --crit: #E08172; --crit-tint: #33201C;
+    --focus: #8FB6E8;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    font-size:15.5px;
+    line-height:1.5;
+    padding-inline:20px;
+  }
+  @media (min-width:720px){ body{ padding-inline:32px; } }
+  .wrap{max-width:1080px;margin:0 auto;}
+  h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0;}
+  a{color:inherit;}
+  button{font-family:inherit;}
+  ::selection{background:var(--primary-tint);}
+  :focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:4px;}
+  .mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums;}
+
+  .masthead{
+    position:relative;
+    padding:28px 0 22px;
+    border-bottom:1px solid var(--border);
+    background-image: repeating-radial-gradient(circle at 15% 20%, var(--bg-contour) 0 1px, transparent 1px 34px);
+  }
+  .navrow{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px;}
+  .backlink{
+    display:inline-flex;align-items:center;gap:5px;
+    font-size:13px;color:var(--ink-2);text-decoration:none;
+  }
+  .backlink:hover{color:var(--primary);}
+  .eyebrow{
+    font-family:var(--font-mono);font-size:12px;letter-spacing:.09em;
+    text-transform:uppercase;color:var(--primary);font-weight:500;
+  }
+  .masthead h1{
+    font-size:clamp(28px,4.6vw,42px);font-weight:600;color:var(--ink);
+    margin-top:6px;max-width:min(30ch, 90vw);
+  }
+  .masthead .meta{
+    margin-top:10px;color:var(--ink-2);font-size:14.5px;
+    display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;
+  }
+  .countdown{
+    display:inline-flex;align-items:baseline;gap:6px;
+    background:var(--accent-tint);color:var(--accent);
+    border:1px solid var(--accent);border-radius:999px;
+    padding:3px 12px;font-family:var(--font-mono);font-weight:500;font-size:13px;
+  }
+
+  .stats{
+    margin-top:22px;display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:10px;
+  }
+  .stat{
+    background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--radius);padding:13px 14px;box-shadow:var(--shadow);
+  }
+  .stat .n{font-family:var(--font-display);font-weight:600;font-size:26px;font-variant-numeric:tabular-nums;}
+  .stat .l{font-size:12px;color:var(--ink-2);margin-top:2px;letter-spacing:.02em;}
+  .stat.good .n{color:var(--good);}
+  .stat.warn .n{color:var(--warn);}
+  .stat.crit .n{color:var(--crit);}
+
+  .controls{
+    margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+  }
+  .search{
+    flex:1 1 220px;display:flex;align-items:center;gap:8px;
+    background:var(--surface);border:1px solid var(--border);
+    border-radius:10px;padding:9px 13px;
+  }
+  .search svg{flex:none;color:var(--ink-3);}
+  .search input{
+    border:0;background:transparent;color:var(--ink);
+    font-family:var(--font-body);font-size:14.5px;width:100%;
+  }
+  .search input:focus{outline:none;}
+  .chipset{display:flex;gap:6px;flex-wrap:wrap;}
+  .chip{
+    border:1px solid var(--border);background:var(--surface);color:var(--ink-2);
+    border-radius:999px;padding:7px 13px;font-size:13px;cursor:pointer;
+    font-weight:500;white-space:nowrap;
+  }
+  .chip[aria-pressed="true"]{background:var(--primary);border-color:var(--primary);color:var(--surface);}
+  .chip.status-good[aria-pressed="true"]{background:var(--good);border-color:var(--good);}
+  .chip.status-warn[aria-pressed="true"]{background:var(--warn);border-color:var(--warn);}
+  .chip.status-crit[aria-pressed="true"]{background:var(--crit);border-color:var(--crit);}
+
+  .cat-section{margin-top:30px;}
+  .cat-section h2{
+    font-size:13px;text-transform:uppercase;letter-spacing:.08em;
+    color:var(--ink-3);font-family:var(--font-body);font-weight:700;
+    margin-bottom:12px;
+  }
+  .station-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+    gap:14px;
+  }
+  .station{
+    background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow);
+  }
+  .station.needs{border-style:dashed;border-color:var(--crit);}
+  .station-head{
+    display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+    border-bottom:1px dashed var(--border);padding-bottom:9px;margin-bottom:10px;
+  }
+  .station-head h3{font-family:var(--font-body);font-size:15.5px;font-weight:700;}
+  .station-count{font-family:var(--font-mono);font-size:12px;color:var(--ink-3);white-space:nowrap;}
+  .volunteer{padding:7px 0;border-bottom:1px solid var(--border);}
+  .volunteer:last-child{border-bottom:0;padding-bottom:0;}
+  .volunteer:first-child{padding-top:0;}
+  .v-top{display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+  .v-name{font-weight:600;font-size:14px;}
+  .pill{
+    font-size:11px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;
+    border-radius:999px;padding:2px 9px;
+  }
+  .pill.yes{background:var(--good-tint);color:var(--good);}
+  .pill.maybe{background:var(--warn-tint);color:var(--warn);}
+  .flag-note{color:var(--crit);cursor:help;font-size:13px;}
+  .v-note{
+    margin-top:4px;font-size:12.5px;color:var(--ink-2);
+    background:var(--surface-2);border-left:2px solid var(--crit);
+    padding:5px 8px;border-radius:0 6px 6px 0;
+  }
+  .needs-state{color:var(--crit);font-size:13.5px;font-weight:600;padding:2px 0;}
+  .empty-note{color:var(--ink-3);font-size:13.5px;padding:6px 0;}
+  .slot-open{
+    padding:7px 0;border-bottom:1px dashed var(--border);
+    color:var(--ink-3);font-size:13px;font-style:italic;
+  }
+  .slot-open:last-child{border-bottom:0;}
+
+  footer{
+    margin:40px 0 32px;padding-top:18px;border-top:1px solid var(--border);
+    font-size:12.5px;color:var(--ink-3);line-height:1.7;
+  }
+  footer a{color:var(--focus);}
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <div class="navrow">
+      <a class="backlink" href="jsn-coverage.html">&larr; JSN Night Coverage</a>
+      <a class="backlink" href="scout-talks.html">Scout Talks Schedule</a>
+    </div>
+    <div class="eyebrow">Capitol Area Council &middot; North Shore District</div>
+    <h1>Scout Rally — Volunteer Coverage</h1>
+    <div class="meta">
+      <span>Sat, Sept 19, 2026 &middot; <span class="mono">9:00–11:30 AM</span> &middot; Champion Park</span>
+      <span class="countdown" id="countdown"></span>
+      <span>Snapshot as of <span class="mono" id="snapshotDate"></span></span>
+    </div>
+  </header>
+
+  <section class="stats" id="stats"></section>
+
+  <div class="controls">
+    <label class="search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="searchBox" type="text" placeholder="Search station or volunteer…" autocomplete="off">
+    </label>
+    <div class="chipset" id="statusChips">
+      <button class="chip" data-status="all" aria-pressed="true">All</button>
+      <button class="chip status-good" data-status="yes" aria-pressed="false">Confirmed</button>
+      <button class="chip status-warn" data-status="maybe" aria-pressed="false">Tentative</button>
+      <button class="chip status-crit" data-status="needs" aria-pressed="false">Needs volunteer</button>
+    </div>
+  </div>
+
+  <div id="categories"></div>
+
+  <footer>
+    Tracks volunteer coverage for the Sept 19 Scout Rally at Champion Park — a separate event from Join Scouting
+    Night, tracked on the <a href="jsn-coverage.html">JSN coverage page</a>. Add volunteers as sign-ups come in.
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var TODAY = "2026-09-15";
+  var CAPACITY = 4; // 1 lead + 3 assistants per station
+
+  var STATIONS = [
+    {key:"lions", category:"Bobcat Activities", name:"Lions"},
+    {key:"tigers", category:"Bobcat Activities", name:"Tigers"},
+    {key:"wolves", category:"Bobcat Activities", name:"Wolves"},
+    {key:"bears", category:"Bobcat Activities", name:"Bears"},
+    {key:"webelos", category:"Bobcat Activities", name:"Webelos"},
+    {key:"aols", category:"Bobcat Activities", name:"AOLs"},
+
+    {key:"kites", category:"Activities", name:"Kites"},
+    {key:"dino-dig", category:"Activities", name:"Dino Dig"},
+
+    {key:"registration", category:"Event Support", name:"Registration"},
+    {key:"refreshments", category:"Event Support", name:"Refreshments"},
+    {key:"backup", category:"Event Support", name:"Backup / General Support"}
+  ];
+
+  // Add volunteers here as sign-ups come in, e.g.:
+  // {station:"lions", name:"Jane Doe", status:"yes", note:""},
+  var SIGNUPS = [
+    {station:"lions", name:"Keri Burns", status:"yes", note:""}
+  ];
+
+  var CATEGORIES = ["Bobcat Activities", "Activities", "Event Support"];
+
+  function esc(s){
+    return String(s==null?"":s).replace(/[&<>"]/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];
+    });
+  }
+
+  document.getElementById("snapshotDate").textContent =
+    new Date(TODAY+"T00:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});
+
+  (function(){
+    var today = new Date(TODAY+"T00:00:00");
+    var evt = new Date("2026-09-19T00:00:00");
+    var days = Math.round((evt-today)/86400000);
+    document.getElementById("countdown").textContent =
+      days > 0 ? (days + " day" + (days===1?"":"s") + " to go") : "Today!";
+  })();
+
+  function signupsFor(key){
+    return SIGNUPS.filter(function(s){ return s.station===key; });
+  }
+
+  function renderStats(){
+    var confirmed = SIGNUPS.filter(function(s){return s.status==="yes";}).length;
+    var tentative = SIGNUPS.filter(function(s){return s.status==="maybe";}).length;
+    var totalSlots = STATIONS.length * CAPACITY;
+    var filledSlots = SIGNUPS.length;
+    var openSlots = totalSlots - filledSlots;
+
+    var tiles = [
+      {n:STATIONS.length, l:"Stations", cls:""},
+      {n:filledSlots+" / "+totalSlots, l:"Slots filled (4 per station)", cls:""},
+      {n:confirmed, l:"Confirmed sign-ups", cls:"good"},
+      {n:tentative, l:"Tentative sign-ups", cls:"warn"},
+      {n:openSlots, l:"Open slots remaining", cls:"crit"}
+    ];
+    document.getElementById("stats").innerHTML = tiles.map(function(t){
+      return '<div class="stat '+t.cls+'"><div class="n mono">'+esc(t.n)+'</div><div class="l">'+esc(t.l)+'</div></div>';
+    }).join("");
+  }
+
+  var state = { q:"", status:"all" };
+
+  function volunteerHtml(s){
+    return '<div class="volunteer">' +
+      '<div class="v-top">' +
+        '<span class="v-name">'+esc(s.name)+'</span>' +
+        '<span class="pill '+s.status+'">'+(s.status==="yes"?"Confirmed":"Tentative")+'</span>' +
+        (s.note ? '<span class="flag-note" title="Has a sourcing note">&#9873;</span>' : "") +
+      '</div>' +
+      (s.note ? '<div class="v-note">'+esc(s.note)+'</div>' : "") +
+    '</div>';
+  }
+
+  function stationVisible(st, all){
+    var openCount = Math.max(0, CAPACITY - all.length);
+    if(state.status==="yes" && !all.some(function(s){return s.status==="yes";})) return false;
+    if(state.status==="maybe" && !all.some(function(s){return s.status==="maybe";})) return false;
+    if(state.status==="needs" && openCount<=0) return false;
+    if(state.q){
+      var hay = [st.name, st.category].concat(all.map(function(s){return s.name;})).join(" ").toLowerCase();
+      if(hay.indexOf(state.q)===-1) return false;
+    }
+    return true;
+  }
+
+  function stationHtml(st){
+    var all = signupsFor(st.key);
+    if(!stationVisible(st, all)) return "";
+
+    var summary = all.length + " / " + CAPACITY + " filled";
+    var openCount = Math.max(0, CAPACITY - all.length);
+
+    var rows = [];
+    for(var i=0;i<CAPACITY;i++){
+      rows.push(all[i] ? volunteerHtml(all[i]) : '<div class="slot-open">Open slot</div>');
+    }
+
+    return '<div class="station'+(openCount>0?' needs':'')+'"><div class="station-head"><h3>'+esc(st.name)+'</h3>' +
+      '<span class="station-count">'+esc(summary)+'</span></div>' +
+      rows.join("") + '</div>';
+  }
+
+  function renderCategories(){
+    var html = CATEGORIES.map(function(cat){
+      var stations = STATIONS.filter(function(st){ return st.category===cat; });
+      var cards = stations.map(stationHtml).join("");
+      if(!cards) return "";
+      return '<section class="cat-section"><h2>'+esc(cat)+'</h2>' +
+        '<div class="station-grid">'+cards+'</div></section>';
+    }).join("");
+    document.getElementById("categories").innerHTML = html ||
+      '<p class="empty-note">No stations match the current filter.</p>';
+  }
+
+  document.getElementById("searchBox").addEventListener("input", function(e){
+    state.q = e.target.value.trim().toLowerCase();
+    renderCategories();
+  });
+  document.querySelectorAll("#statusChips .chip").forEach(function(chip){
+    chip.addEventListener("click", function(){
+      document.querySelectorAll("#statusChips .chip").forEach(function(c){c.setAttribute("aria-pressed","false");});
+      chip.setAttribute("aria-pressed","true");
+      state.status = chip.dataset.status;
+      renderCategories();
+    });
+  });
+
+  renderStats();
+  renderCategories();
+})();
+</script>
