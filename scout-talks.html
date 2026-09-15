@@ -81,10 +81,10 @@
     border-bottom:1px solid var(--border);
     background-image: repeating-radial-gradient(circle at 15% 20%, var(--bg-contour) 0 1px, transparent 1px 34px);
   }
+  .navrow{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px;}
   .backlink{
     display:inline-flex;align-items:center;gap:5px;
     font-size:13px;color:var(--ink-2);text-decoration:none;
-    margin-bottom:12px;
   }
   .backlink:hover{color:var(--primary);}
   .eyebrow{
@@ -162,7 +162,10 @@
 
 <div class="wrap">
   <header class="masthead">
-    <a class="backlink" href="jsn-coverage.html">&larr; Back to JSN Night Coverage</a>
+    <div class="navrow">
+      <a class="backlink" href="jsn-coverage.html">&larr; JSN Night Coverage</a>
+      <a class="backlink" href="scout-rally-coverage.html">Scout Rally Coverage &rarr;</a>
+    </div>
     <div class="eyebrow">Capitol Area Council &middot; North Shore District</div>
     <h1>Scout Talks Schedule — Fall 2026</h1>
     <div class="meta">
@@ -280,6 +283,3 @@
   }
 
   renderStats();
-  renderDays();
-})();
-</script>
